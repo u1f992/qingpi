@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "3ds")(type "KiCad")(uri "${KIPRJMOD}/3ds.pretty")(options "")(descr ""))
+)
