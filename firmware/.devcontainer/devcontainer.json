@@ -1,0 +1,19 @@
+{
+    "name": "pico-sdk",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--device=/dev/bus/usb",
+        "--device=/dev/ttyACM0"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // P.26
+                "marus25.cortex-debug",
+                "ms-vscode.cpptools-extension-pack"
+            ]
+        }
+    }
+}
