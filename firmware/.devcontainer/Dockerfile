@@ -22,7 +22,7 @@ RUN cd /home/pi/ \
     && mkdir pico \
     && cd pico \
     \
-    && git clone https://github.com/raspberrypi/pico-sdk.git --branch master --single-branch --depth=1 \
+    && git clone https://github.com/raspberrypi/pico-sdk.git --branch 1.5.1 --single-branch --depth=1 \
     && cd pico-sdk \
     && git submodule update --init --recommend-shallow --depth=1 \
     && cd .. \

@@ -4,8 +4,8 @@
         "dockerfile": "Dockerfile"
     },
     "runArgs": [
-        "--device=/dev/bus/usb",
-        "--device=/dev/ttyACM0"
+        // "--device=/dev/bus/usb",
+        // "--device=/dev/ttyACM0"
     ],
     "customizations": {
         "vscode": {
