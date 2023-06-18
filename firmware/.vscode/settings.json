@@ -65,6 +65,7 @@
         "typeinfo": "cpp",
         "queue": "cpp",
         "3ds.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "thread": "cpp"
     }
 }
