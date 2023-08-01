@@ -1,33 +1,47 @@
+// AUTOMATICALLY GENERATED FILE. PLEASE DO NOT MODIFY IT MANUALLY
+//
+// PIO Unified Debugger
+//
+// Documentation: https://docs.platformio.org/page/plus/debugging.html
+// Configuration: https://docs.platformio.org/page/projectconf/section_env_debug.html
+
 {
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Pico Debug",
-            "cwd": "${workspaceRoot}",
-            "executable": "${command:cmake.launchTargetPath}",
+            "type": "platformio-debug",
             "request": "launch",
-            "type": "cortex-debug",
-            "servertype": "openocd",
-            // This may need to be "arm-none-eabi-gdb" for some previous builds
-            "gdbPath" : "gdb-multiarch",
-            "device": "RP2040",
-            "configFiles": [
-                // This may need to be "interface/picoprobe.cfg" for some previous builds
-                "interface/cmsis-dap.cfg",
-                "target/rp2040.cfg"
-            ],
-            "svdFile": "${env:PICO_SDK_PATH}/src/rp2040/hardware_regs/rp2040.svd",
-            "runToEntryPoint": "main",
-            // Work around for stopping at main on restart
-            "postRestartCommands": [
-                "break main",
-                "continue"
-            ],
-            
-            // https://github.com/raspberrypi/picoprobe/issues/49#issuecomment-1331748165
-            "openOCDLaunchCommands": [
-                "adapter speed 5000"
-            ]
+            "name": "PIO Debug",
+            "executable": "C:/Users/mukai/3ds-bss/firmware/.pio/build/pico/firmware.elf",
+            "projectEnvName": "pico",
+            "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd",
+            "preLaunchTask": {
+                "type": "PlatformIO",
+                "task": "Pre-Debug"
+            }
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (skip Pre-Debug)",
+            "executable": "C:/Users/mukai/3ds-bss/firmware/.pio/build/pico/firmware.elf",
+            "projectEnvName": "pico",
+            "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd"
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (without uploading)",
+            "executable": "C:/Users/mukai/3ds-bss/firmware/.pio/build/pico/firmware.elf",
+            "projectEnvName": "pico",
+            "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd",
+            "loadMode": "manual"
         }
     ]
 }
