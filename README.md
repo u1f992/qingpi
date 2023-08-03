@@ -1,19 +1,204 @@
-# 3ds-bss
+# 3DS-BSS
 
 (WIP) 3DS console externally controllable via serial communication.
 
-## TODO
+## モチベーション
 
-- [ ] Develop a flexible board to connect the TPs to the microcontroller.
-- [ ] Enable the microcontroller to control buttons, pads, and touch panel.
-- [ ] Develop a front-end GUI application.
-- [ ] Develop a microcontroller board small enough to be embedded.
+マイコンによる3DSの自動操作は[3DS controller mod](https://3dscapture.com/controller/) by loopyや[dekuNukem/3xtDS](https://github.com/dekuNukem/3xtDS)ですでに実現しています。しかし、どちらも現在は入手および制作困難となっています。
 
-## Naming
+このプロジェクトでは、3DSの自動化に係る要素について再度ドキュメントを作成するとともに、内蔵可能で、かつ移植性に優れたマイコンボードの開発を目指します。加えて、タッチスクリーン操作について3xtDSとは異なるアプローチを提案します。
 
-BSS (「僕が先に好きだったのに」) is one of the subcategories of the Japanese pornography genre NTR (「寝取られ」, I guess it means about the same as "cuckold"). You know, NTR is used as a product code for Nintendo DS (but this one means "Nitro").
+## 本体の選定
 
-## Reference
+3DSシリーズにはいくつか種別があります。いずれもTPはほぼ共通[^1]です。
 
-- [dekuNukem/3xtDS](https://github.com/dekuNukem/3xtDS)
-- [3DS controller mod](https://3dscapture.com/controller/) by loopy
+| 種別            | 特徴                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 3DS（o3DS）     | 入手しやすい。キャプチャ基板の取り付けが比較的容易[^2]だが、本体内にスペースの余裕がない。                                      |
+| 3DS LL（XL）    | キャプチャ基板の取り付けが比較的容易[^3]で、本体内に基板を収める余裕がある。                                                    |
+| New 3DSシリーズ | 本体性能が向上し、New専用ソフトもある。旧機種ほど値崩れしていない。<br>キャプチャ基板の取り付けが高難易度、現実的ではない[^4]。 |
+| 2DSシリーズ     | （知見が少ないため除外）                                                                                                        |
+
+自動操作に対応できないゲームソフトが出てきますが、他改造との共存のしやすさと工作精度の懸念から、3DS LLをベースに開発を進めます。
+
+[^1]: http://problemkaputt.de/gbatek-3ds-testpoints.htm
+[^2]: https://optimize.ath.cx/N-SPA3/index.htm
+[^3]: https://optimize.ath.cx/LL-SPA3/index.htm
+[^4]: https://optimize.ath.cx/NEW3DS/index.htm
+
+## 各要素の解説
+
+以下のコードはすべてArduino風の疑似コードであり、このまま書けば動くものではありません。
+
+### ボタン
+
+| Function  | TP  |
+| --------- | --- |
+| Y         | 88  |
+| B         | 92  |
+| A         | 89  |
+| X         | 86  |
+| L         | 83  |
+| R         | 82  |
+| Select    | 81  |
+| Start     | 80  |
+| Home      | 55  |
+| 電源      | 52  |
+| Wi-Fi切替 | 58  |
+| ↑         | 85  |
+| →         | 90  |
+| ↓         | 91  |
+| ←         | 87  |
+
+押下されることでランド同士が導通する一般的な構造です。
+
+11個のTPが露出しており、それぞれアクティブローのデジタル入力です。解放時は（1.8V出力ではなく）ハイインピーダンス状態にすることで、本体のボタン入力機能を維持できます。
+
+```c
+// Hold
+pinMode(PIN_BTN, OUTPUT);
+digitalWrite(PIN_BTN, LOW);
+
+// Release
+pinMode(PIN_BTN, INPUT);
+```
+
+### スライドパッド
+
+| Function | TP  |
+| -------- | --- |
+| X軸      | 69  |
+| Y軸      | 68  |
+
+2基のポテンショメータで構成されます。フレキシブルケーブルの4線は、GND、X軸出力、1.8V、Y軸出力に対応します。
+
+X軸とY軸に対応するTPが露出しています。X軸は左から右、Y軸は下から上に0～1.8Vのアナログ入力です。解放時は（1.8 / 2 = 0.9Vではなく）ハイインピーダンス状態にすることで、本体のパッド入力機能を維持できます。
+
+```c
+// Hold
+analogWrite(PIN_SP_X, x / 1.8);
+analogWrite(PIN_SP_Y, y / 1.8);
+
+// Release
+pinMode(PIN_SP_X, INPUT);
+pinMode(PIN_SP_Y, INPUT);
+```
+
+なお実際には別途バッファ付きD/Aコンバータを使用して高速・高精度の出力を実現し、ラッチ機能を利用して両軸の電圧を同時に更新するように工夫しています。
+
+### タッチスクリーン
+
+| Function | TP  |
+| -------- | --- |
+| X+       | 216 |
+| X-       | 215 |
+| Y+       | 213 |
+| Y-       | 214 |
+
+タッチスクリーンの原理として、X軸とY軸にそれぞれ1基のポテンショメータが搭載されており、押下されることでワイパー同士が接続される状態をイメージしてください。
+
+![](doc/touchscreen_as_potentiometers.drawio.svg)
+
+3DSでは、4つのピンの機能を以下のように操作することで、押下の検出と各座標の取得を行います（指定のないピンはハイインピーダンス状態と考えられます）。
+
+- Y+をプルアップ回路付きデジタル入力、X-をLOWとして押下を検知→以下の割り込み処理を発火
+- X+をHIGH、X-をLOW、Y+をアナログ入力とすることで、X座標を取得
+- Y+をHIGH、Y-をLOW、X+をアナログ入力とすることで、Y座標を取得
+
+3xtDSではピンを監視し時間を計測してX+とY+に直接アナログ出力をしていましたが、マイクロ秒精度の制御が必要であるほか、タッチ入力がブロッキング処理になりタッチしながらほかの操作を受け付けられない、境界値付近の入力は困難という課題がありました。
+
+3DS-BSSでは、X+〜X-間とY+〜Y-間にデジタルポテンショメータを接続し、ワイパー同士をリレーを挟んで接続します。リレーがオンになることでY+はLOWになり、両方向で分圧回路が成立します。解放時はリレーをオフにするとともにデジタルポテンショメータもシャットダウンすることで、本体のタッチ入力機能を維持できます。
+
+![](doc/digital_potentiometers.drawio.svg)
+
+```c
+// Hold
+setPotentiometer(PIN_TS_X, x / 340);
+setPotentiometer(PIN_TS_Y, y / 240);
+digitalWrite(PIN_RELAY, HIGH);
+
+// Release
+digitalWrite(PIN_RELAY, LOW);
+shutdownPotentiometers();
+```
+
+3DS LLにおいて実際のタッチスクリーンの全抵抗値は、X軸方向が約460Ω、Y軸方向が約360Ωです。プルアップ抵抗値は不明ですが、全抵抗値が可能な限り低いデジタルポテンショメータを使用する必要があると考えられます。実験の結果、Y軸に全抵抗値1kΩ、X軸に2kΩのデジタルポテンショメータとするのは問題ないようです。
+
+執筆時点で、市販品には1kΩ未満の高分解能なデジタルポテンショメータはありません。Y軸の240pxは8bitで対応できますが、X軸の340pxを指定するために、2基のポテンショメータを直列に接続して設定値に応じてどちらのワイパーから電圧を取り出すか切り替えることで対処しています[^5]。
+
+[^5]: https://www.analog.com/media/en/technical-documentation/application-notes/AN-582.pdf
+
+### 拡張スライドパッド／赤外線
+
+TP255に露出していることはわかっていますが、詳細はわかりません。
+
+Controller Modには拡張スライドパッドのエミュレーション機能がありますが、もとがPSoCなうえアセンブリ言語も用いているので移植が困難です。PIOも別コアも空いているので、気概さえあれば実装できます。
+
+### 電源
+
++5.0Vからマイコンに電力を供給します。+1.8VはD/Aコンバータのリファレンス電圧として利用します。
+
+| 電圧 | TP  |
+| ---- | --- |
+| +5.0 | 32  |
+| +1.8 | 5   |
+| GND  | 1   |
+
+## シリアル通信のコマンド
+
+バイナリ構造は[NX Macro Controller](https://blog.bzl-web.com/entry/2020/01/20/165719)の方式に準拠します[^6]。パッド座標は左上起点で、ニュートラルポジションは128です。右パッドは将来の更新のために予約されています。
+
+Switchのキーボード操作に使用されている末尾3バイトをタッチスクリーン操作に割り当てます。タッチ入力座標は左上起点で1 <= x <= 340、1 <= y <= 240の値を受け付けます。いずれかが範囲外の場合、タッチ入力を解除します。
+
+| Index | Value                     |
+| ----- | ------------------------- |
+| 0     | 0xAB                      |
+| 1     | Button lower              |
+| 2     | Button upper              |
+| 3     | Hat                       |
+| 4     | Left pad X-axis           |
+| 5     | Left pad Y-axis           |
+| 6     | (Right pad X-axis)        |
+| 7     | (Right pad Y-axis)        |
+| 8     | Touch screen X-axis lower |
+| 9     | Touch screen X-axis upper |
+| 10    | Touch screen Y-axis       |
+
+ボタンは各ビットについて0を解放、1を押下とします。ZLとZRは将来の更新のために予約されています。対応するボタンが存在しないL ClickとR Clickには、電源とWi-Fi切替を割り当てています。
+
+| Button (NXMC)     | Bit mask              |
+| ----------------- | --------------------- |
+| Y                 | 0b0000'0000'0000'0001 |
+| B                 | 0b0000'0000'0000'0010 |
+| A                 | 0b0000'0000'0000'0100 |
+| X                 | 0b0000'0000'0000'1000 |
+| L                 | 0b0000'0000'0001'0000 |
+| R                 | 0b0000'0000'0010'0000 |
+| (ZL)              | 0b0000'0000'0100'0000 |
+| (ZR)              | 0b0000'0000'1000'0000 |
+| (-) → Select      | 0b0000'0001'0000'0000 |
+| (+) → Start       | 0b0000'0010'0000'0000 |
+| (L Click) → Power | 0b0000'0100'0000'0000 |
+| (R Click) → Wi-Fi | 0b0000'1000'0000'0000 |
+| Home              | 0b0001'0000'0000'0000 |
+| (Capture)         | 0b0010'0000'0000'0000 |
+
+ハットの各方向の実体はボタンですが、押し方の組み合わせは機構上制限されています。
+
+| Hat | Value |
+| --- | ----- |
+| ↑   | 0     |
+| ↗   | 1     |
+| →   | 2     |
+| ↘   | 3     |
+| ↓   | 4     |
+| ↙   | 5     |
+| ←   | 6     |
+| ↖   | 7     |
+| x   | 8     |
+
+[^6]: https://scrapbox.io/yatsuna827827-12010999/Nintendo_Switch%E3%82%92%E6%93%8D%E4%BD%9C%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%81%AE%E4%BB%95%E6%A7%98%E3%82%92%E8%AA%BF%E3%81%B9%E3%82%8B
+
+## 名称
+
+DSがNTRなので、BSSです（3DSはCTRらしいですが）。
