@@ -42,7 +42,9 @@ void mcp4922_set(mcp4922_t *dac, mcp4922_selection_t ab, mcp4922_buffer_control_
         return;
     }
     uint16_t d = (ab << 15) | (buf << 14) | (ga << 13) | (shdn << 12) | data;
+    digitalWrite(dac->cs, LOW);
     dac->spi->transfer16(d);
+    digitalWrite(dac->cs, HIGH);
 }
 
 void mcp4922_latch(mcp4922_t *dac)

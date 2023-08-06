@@ -11,16 +11,17 @@ typedef struct
 
 void slidepad_hold(slidepad_t *sp, uint8_t x, uint8_t y)
 {
-    mcp4922_latch(sp->dac);
-    mcp4922_set(sp->dac, MCP4922_DAC_A, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(x, 0, 255, 0, 4095));
-    mcp4922_set(sp->dac, MCP4922_DAC_B, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(y, 0, 255, 0, 4095));
-    mcp4922_unlatch(sp->dac);
     mcp4922_power_on(sp->dac);
+    // mcp4922_latch(sp->dac);
+    mcp4922_set(sp->dac, MCP4922_DAC_A, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(255 - x, 0, 255, 0, 4095));
+    mcp4922_set(sp->dac, MCP4922_DAC_B, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(255 - y, 0, 255, 0, 4095));
+    // mcp4922_unlatch(sp->dac);
 }
 
 void slidepad_release(slidepad_t *sp)
 {
-    mcp4922_shutdown(sp->dac);
+    slidepad_hold(sp, 128, 128);
+    // mcp4922_shutdown(sp->dac);//
 }
 
 void slidepad_init(slidepad_t *sp, mcp4922_t *dac)
