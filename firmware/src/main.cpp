@@ -47,7 +47,6 @@ mcp4922_t dac;
 slidepad_t sp;
 
 ad840x_t pots;
-adg752_t sw;
 g3vm_x1wr_t relay;
 touchscreen_t ts;
 
@@ -65,9 +64,8 @@ void setup()
     slidepad_init(&sp, &dac);
 
     ad840x_init(&pots, &SPI, 5, 6);
-    adg752_init(&sw, 7);
     g3vm_x1wr_init(&relay, 8);
-    touchscreen_init(&ts, &pots, &sw, &relay);
+    touchscreen_init(&ts, &pots, &relay);
 
     button_init(&btn_y, 9);
     button_init(&btn_b, 10);
@@ -131,47 +129,79 @@ void loop()
     uint8_t ly = data[5];
     // uint8_t rx = data[6];
     // uint8_t ry = data[7];
-    uint8_t tx = data[8] | data[9] << 8;
-    uint16_t ty = data[10];
-    Serial.printf("btns:%u,dir:%u,lx:%u,ly:%u,tx:%u,ty:%u", btns, dir, lx, ly, tx, ty);
+    uint16_t tx = data[8] | data[9] << 8;
+    uint8_t ty = data[10];
+    Serial.print(btns);
+    Serial.print(",");
+    Serial.print(dir);
+    Serial.print(",");
+    Serial.print(lx);
+    Serial.print(",");
+    Serial.print(ly);
+    Serial.print(",");
+    Serial.print(tx);
+    Serial.print(",");
+    Serial.print(ty);
+    Serial.print("\n");
 
     for (int i = 0; i < 14; i++)
     {
+        Serial.print("btn[");
+        Serial.print(i);
+        Serial.print("]: ");
         if (btn_all[i] == NULL)
         {
+            Serial.print("null\n");
             continue;
         }
 
         if (btns & (1 << i))
         {
+            Serial.print("hold\n");
             button_hold(btn_all[i]);
         }
         else
         {
+            Serial.print("release\n");
             button_release(btn_all[i]);
         }
     }
 
     if (dir <= 8)
     {
+        Serial.print("hat: hold ");
+        Serial.print(dir);
+        Serial.print("\n");
         hat_hold(&hat, (hat_direction_t)dir);
     }
 
     if (lx != 128 || ly != 128)
     {
+        Serial.print("sp: hold ");
+        Serial.print(lx);
+        Serial.print(",");
+        Serial.print(ly);
+        Serial.print("\n");
         slidepad_hold(&sp, lx, ly);
     }
     else
     {
+        Serial.print("sp: release\n");
         slidepad_release(&sp);
     }
 
-    if (0 < tx && 0 < ty)
+    if (0 < tx && tx <= 320 && 0 < ty && ty <= 240/*tx <= 511*/)
     {
+        Serial.print("ts: hold ");
+        Serial.print(tx);
+        Serial.print(",");
+        Serial.print(ty);
+        Serial.print("\n");
         touchscreen_hold(&ts, tx, ty);
     }
     else
     {
+        Serial.print("ts: release\n");
         touchscreen_release(&ts);
     }
 }

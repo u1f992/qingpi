@@ -1,0 +1,1 @@
+Emoji from [Fluent Emoji](https://github.com/microsoft/fluentui-emoji)
