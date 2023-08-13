@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <SPI.h>
+#include <Wire.h>
 
 #include "button.h"
 #include "hat.h"
@@ -43,7 +44,7 @@ button_t hat_down;
 button_t hat_left;
 hat_t hat;
 
-mcp4922_t dac;
+ds4432_t dac;
 slidepad_t sp;
 
 ad840x_t pots;
@@ -60,7 +61,11 @@ void setup()
     // SPI.setCS(5);
     SPI.begin();
 
-    mcp4922_init(&dac, &SPI, 1, 0, 4);
+    Wire.setSDA(0);
+    Wire.setSCL(1);
+    Wire.begin();
+
+    ds4432_init(&dac, &Wire);
     slidepad_init(&sp, &dac);
 
     ad840x_init(&pots, &SPI, 5, 6);
@@ -175,7 +180,7 @@ void loop()
         hat_hold(&hat, (hat_direction_t)dir);
     }
 
-    if (lx != 128 || ly != 128)
+    if (lx != SLIDEPAD_NEUTRAL || ly != SLIDEPAD_NEUTRAL)
     {
         Serial.print("sp: hold ");
         Serial.print(lx);
@@ -190,7 +195,7 @@ void loop()
         slidepad_release(&sp);
     }
 
-    if (0 < tx && tx <= 320 && 0 < ty && ty <= 240/*tx <= 511*/)
+    if (0 < tx && tx <= 320 && 0 < ty && ty <= 240)
     {
         Serial.print("ts: hold ");
         Serial.print(tx);

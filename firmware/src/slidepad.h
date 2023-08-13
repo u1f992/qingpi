@@ -1,30 +1,55 @@
 #pragma once
 
-#include "mcp4922.h"
+#include "ds4432.h"
 
 #include "utility.h"
 
 typedef struct
 {
-    mcp4922_t *dac;
+    ds4432_t *dac;
 } slidepad_t;
+
+#define SLIDEPAD_NEUTRAL 128
 
 void slidepad_hold(slidepad_t *sp, uint8_t x, uint8_t y)
 {
-    mcp4922_power_on(sp->dac);
-    // mcp4922_latch(sp->dac);
-    mcp4922_set(sp->dac, MCP4922_DAC_A, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(255 - x, 0, 255, 0, 4095));
-    mcp4922_set(sp->dac, MCP4922_DAC_B, MCP4922_BUFFERED, MCP4922_1X, MCP4922_ACTIVE, rescale(255 - y, 0, 255, 0, 4095));
-    // mcp4922_unlatch(sp->dac);
+    if (x == SLIDEPAD_NEUTRAL)
+    {
+        ds4432_set(sp->dac, DS4432_OUT0, DS4432_SOURCE, 0);
+    }
+    else if(SLIDEPAD_NEUTRAL < x)
+    {
+        // 129, 130, ..., 255
+        ds4432_set(sp->dac, DS4432_OUT0, DS4432_SINK, rescale(x, 129, 255, 1, 127));
+    }
+    else
+    {
+        // 127, 126, ..., 0
+        ds4432_set(sp->dac, DS4432_OUT0, DS4432_SOURCE, rescale(127 - x, 0, 127, 1, 127));
+    }
+
+    if (y == SLIDEPAD_NEUTRAL)
+    {
+        ds4432_set(sp->dac, DS4432_OUT1, DS4432_SOURCE, 0);
+    }
+    else if(SLIDEPAD_NEUTRAL < y)
+    {
+        // 129, 130, ..., 255
+        ds4432_set(sp->dac, DS4432_OUT1, DS4432_SINK, rescale(y, 129, 255, 1, 127));
+    }
+    else
+    {
+        // 127, 126, ..., 0
+        ds4432_set(sp->dac, DS4432_OUT1, DS4432_SOURCE, rescale(127 - y, 0, 127, 1, 127));
+    }
 }
 
 void slidepad_release(slidepad_t *sp)
 {
-    slidepad_hold(sp, 128, 128);
-    // mcp4922_shutdown(sp->dac);//
+    slidepad_hold(sp, SLIDEPAD_NEUTRAL, SLIDEPAD_NEUTRAL);
 }
 
-void slidepad_init(slidepad_t *sp, mcp4922_t *dac)
+void slidepad_init(slidepad_t *sp, ds4432_t *dac)
 {
     sp->dac = dac;
     slidepad_release(sp);
