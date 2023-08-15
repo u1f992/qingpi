@@ -86,8 +86,10 @@ inline bool nxmc2_builder_can_build(nxmc2_builder_t *builder)
 
 inline void nxmc2_builder_append(nxmc2_builder_t *builder, uint8_t packet)
 {
-    if (builder->ptr_ == 0 && packet != NXMC2_COMMAND_HEADER)
+    if ((builder->ptr_ == 0 && packet != NXMC2_COMMAND_HEADER) ||
+        (builder->ptr_ == 3 && 8 < packet))
     {
+        nxmc2_builder_clear(builder);
         return;
     }
 

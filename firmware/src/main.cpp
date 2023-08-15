@@ -146,29 +146,29 @@ void setup()
     // SPI.setCS(5);
     SPI.begin();
 
-    button_init(&btn_y, 9);
-    button_init(&btn_b, 10);
-    button_init(&btn_a, 11);
-    button_init(&btn_x, 12);
-    button_init(&btn_l, 13);
-    button_init(&btn_r, 14);
-    button_init(&btn_select, 15);
-    button_init(&btn_start, 16);
-    button_init(&btn_home, 17);
-    button_init(&btn_power, 18);
-    button_init(&btn_wifi, 19);
+    button_init(&btn_y, 7);
+    button_init(&btn_b, 8);
+    button_init(&btn_a, 9);
+    button_init(&btn_x, 10);
+    button_init(&btn_l, 11);
+    button_init(&btn_r, 12);
+    button_init(&btn_select, 13);
+    button_init(&btn_start, 14);
+    button_init(&btn_home, 15);
+    button_init(&btn_power, 16);
+    button_init(&btn_wifi, 17);
 
-    button_init(&hat_up, 20);
-    button_init(&hat_right, 21);
-    button_init(&hat_down, 22);
-    button_init(&hat_left, 26);
+    button_init(&hat_up, 18);
+    button_init(&hat_right, 19);
+    button_init(&hat_down, 20);
+    button_init(&hat_left, 21);
     hat_init(&hat, &hat_up, &hat_right, &hat_down, &hat_left);
 
     ds4432_init(&dac, &Wire);
     slidepad_init(&sp, &dac);
 
-    ad840x_init(&pots, &SPI, 5, 6);
-    g3vm_xwr_init(&relay, 8);
+    ad840x_init(&pots, &SPI, 5, 4);
+    g3vm_xwr_init(&relay, 6);
     touchscreen_init(&ts, &pots, &relay);
 
     nxmc2_builder_init(&builder);
