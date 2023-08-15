@@ -2,7 +2,11 @@
     "files.associations": {
         "arduino.h": "c",
         "spi.h": "c",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

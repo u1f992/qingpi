@@ -7,70 +7,144 @@
 #include "slidepad.h"
 #include "touchscreen.h"
 
-button_t btn_y;
-button_t btn_b;
-button_t btn_a;
-button_t btn_x;
-button_t btn_l;
-button_t btn_r;
-// button_t btn_zl;
-// button_t btn_zr;
-button_t btn_select;
-button_t btn_start;
-// button_t btn_lclick;
-// button_t btn_rclick;
-button_t btn_home;
-button_t btn_power;
-button_t btn_wifi;
-button_t *btn_all[14] = {
-    &btn_y,
-    &btn_b,
-    &btn_a,
-    &btn_x,
-    &btn_l,
-    &btn_r,
-    NULL,
-    NULL,
-    &btn_select,
-    &btn_start,
-    &btn_power,
-    &btn_wifi,
-    &btn_home,
-    NULL};
+#include "nxmc2.h"
 
-button_t hat_up;
-button_t hat_right;
-button_t hat_down;
-button_t hat_left;
-hat_t hat;
+static button_t btn_y;
+static button_t btn_b;
+static button_t btn_a;
+static button_t btn_x;
+static button_t btn_l;
+static button_t btn_r;
+static button_t btn_select;
+static button_t btn_start;
+static button_t btn_home;
+static button_t btn_power;
+static button_t btn_wifi;
+void handle_y(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_y);
+    else
+        button_release(&btn_y);
+}
+void handle_b(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_b);
+    else
+        button_release(&btn_b);
+}
+void handle_a(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_a);
+    else
+        button_release(&btn_a);
+}
+void handle_x(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_x);
+    else
+        button_release(&btn_x);
+}
+void handle_l(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_l);
+    else
+        button_release(&btn_l);
+}
+void handle_r(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_r);
+    else
+        button_release(&btn_r);
+}
+void handle_select(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_select);
+    else
+        button_release(&btn_select);
+}
+void handle_start(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_start);
+    else
+        button_release(&btn_start);
+}
+void handle_home(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_home);
+    else
+        button_release(&btn_home);
+}
+void handle_power(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_power);
+    else
+        button_release(&btn_power);
+}
+void handle_wifi(nxmc2_button_t state)
+{
+    if (state == NXMC2_BUTTON_PRESSED)
+        button_hold(&btn_wifi);
+    else
+        button_release(&btn_wifi);
+}
 
-ds4432_t dac;
-slidepad_t sp;
+static button_t hat_up;
+static button_t hat_right;
+static button_t hat_down;
+static button_t hat_left;
+static hat_t hat;
+void handle_hat(nxmc2_hat_t state)
+{
+    hat_hold(&hat, (hat_direction_t)state);
+}
 
-ad840x_t pots;
-g3vm_x1wr_t relay;
-touchscreen_t ts;
+static ds4432_t dac;
+static slidepad_t sp;
+void handle_slidepad(uint8_t x, uint8_t y)
+{
+    if (x != NXMC2_STICK_NEUTRAL || y != NXMC2_STICK_NEUTRAL)
+        slidepad_hold(&sp, x, y);
+    else
+        slidepad_release(&sp);
+}
+
+static ad840x_t pots;
+static g3vm_xwr_t relay;
+static touchscreen_t ts;
+void handle_touchscreen(uint8_t x_low, uint8_t x_high, uint8_t y)
+{
+    uint16_t x = x_low | x_high << 8;
+    if (0 < x && x <= 320 && 0 < y && y <= 240)
+        touchscreen_hold(&ts, x, y);
+    else
+        touchscreen_release(&ts);
+}
+
+static nxmc2_builder_t builder;
+static nxmc2_handlers_t handlers;
 
 void setup()
 {
     Serial.begin(9600);
 
-    SPI.setSCK(2);
-    SPI.setTX(3);
-    // SPI.setCS(1);
-    // SPI.setCS(5);
-    SPI.begin();
-
     Wire.setSDA(0);
     Wire.setSCL(1);
     Wire.begin();
 
-    ds4432_init(&dac, &Wire);
-    slidepad_init(&sp, &dac);
-
-    ad840x_init(&pots, &SPI, 5, 6);
-    g3vm_x1wr_init(&relay, 8);
-    touchscreen_init(&ts, &pots, &relay);
+    SPI.setSCK(2);
+    SPI.setTX(3);
+    // SPI.setCS(5);
+    SPI.begin();
 
     button_init(&btn_y, 9);
     button_init(&btn_b, 10);
@@ -90,17 +164,41 @@ void setup()
     button_init(&hat_left, 26);
     hat_init(&hat, &hat_up, &hat_right, &hat_down, &hat_left);
 
+    ds4432_init(&dac, &Wire);
+    slidepad_init(&sp, &dac);
+
+    ad840x_init(&pots, &SPI, 5, 6);
+    g3vm_xwr_init(&relay, 8);
+    touchscreen_init(&ts, &pots, &relay);
+
+    nxmc2_builder_init(&builder);
+    handlers.y = handle_y;
+    handlers.b = handle_b;
+    handlers.a = handle_a;
+    handlers.x = handle_x;
+    handlers.l = handle_l;
+    handlers.r = handle_r;
+    handlers.zl = NULL;
+    handlers.zr = NULL;
+    handlers.minus = handle_select;
+    handlers.plus = handle_start;
+    handlers.l_click = handle_power;
+    handlers.r_click = handle_wifi;
+    handlers.home = handle_home;
+    handlers.capture = NULL;
+    handlers.hat = handle_hat;
+    handlers.l_stick = handle_slidepad;
+    handlers.r_stick = NULL;
+    handlers.ext = handle_touchscreen;
+
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
 
     delay(5000);
 }
 
-uint8_t data[11];
-size_t len = sizeof(data) / sizeof(data[0]);
-size_t ptr = 0;
-#define SERIAL_TIMEOUT 100
-int cnt = 0;
+static const int SERIAL_TIMEOUT = 100;
+static int cnt = 0;
 
 void loop()
 {
@@ -110,103 +208,18 @@ void loop()
         if (cnt == SERIAL_TIMEOUT)
         {
             cnt = 0;
-            ptr = 0;
+            nxmc2_builder_clear(&builder);
         }
         return;
     }
     cnt = 0;
 
-    data[ptr] = Serial.read();
-    if (ptr == 0 && data[0] != 0xAB)
+    nxmc2_builder_append(&builder, Serial.read());
+    if (!nxmc2_builder_can_build(&builder))
     {
         return;
     }
-    else if (ptr != len - 1)
-    {
-        ptr++;
-        return;
-    }
-    ptr = 0;
-
-    uint16_t btns = data[1] | data[2] << 8;
-    uint8_t dir = data[3];
-    uint8_t lx = data[4];
-    uint8_t ly = data[5];
-    // uint8_t rx = data[6];
-    // uint8_t ry = data[7];
-    uint16_t tx = data[8] | data[9] << 8;
-    uint8_t ty = data[10];
-    Serial.print(btns);
-    Serial.print(",");
-    Serial.print(dir);
-    Serial.print(",");
-    Serial.print(lx);
-    Serial.print(",");
-    Serial.print(ly);
-    Serial.print(",");
-    Serial.print(tx);
-    Serial.print(",");
-    Serial.print(ty);
-    Serial.print("\n");
-
-    for (int i = 0; i < 14; i++)
-    {
-        Serial.print("btn[");
-        Serial.print(i);
-        Serial.print("]: ");
-        if (btn_all[i] == NULL)
-        {
-            Serial.print("null\n");
-            continue;
-        }
-
-        if (btns & (1 << i))
-        {
-            Serial.print("hold\n");
-            button_hold(btn_all[i]);
-        }
-        else
-        {
-            Serial.print("release\n");
-            button_release(btn_all[i]);
-        }
-    }
-
-    if (dir <= 8)
-    {
-        Serial.print("hat: hold ");
-        Serial.print(dir);
-        Serial.print("\n");
-        hat_hold(&hat, (hat_direction_t)dir);
-    }
-
-    if (lx != SLIDEPAD_NEUTRAL || ly != SLIDEPAD_NEUTRAL)
-    {
-        Serial.print("sp: hold ");
-        Serial.print(lx);
-        Serial.print(",");
-        Serial.print(ly);
-        Serial.print("\n");
-        slidepad_hold(&sp, lx, ly);
-    }
-    else
-    {
-        Serial.print("sp: release\n");
-        slidepad_release(&sp);
-    }
-
-    if (0 < tx && tx <= 320 && 0 < ty && ty <= 240)
-    {
-        Serial.print("ts: hold ");
-        Serial.print(tx);
-        Serial.print(",");
-        Serial.print(ty);
-        Serial.print("\n");
-        touchscreen_hold(&ts, tx, ty);
-    }
-    else
-    {
-        Serial.print("ts: release\n");
-        touchscreen_release(&ts);
-    }
+    nxmc2_command_t *cmd = nxmc2_builder_build(&builder);
+    nxmc2_command_exec(cmd, &handlers);
+    nxmc2_builder_clear(&builder);
 }
