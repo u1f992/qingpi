@@ -1,7 +1,0 @@
-https://componentsearchengine.com/part-view/W25Q16JVUXIQ/Winbond
-https://componentsearchengine.com/part-view/RP2040/RASPBERRY-PI
-https://componentsearchengine.com/part-view/AD8403ARUZ1-REEL/Analog%20Devices
-https://componentsearchengine.com/part-view/G3VM-31WR(TR05)/Omron%20Electronics
-https://componentsearchengine.com/part-view/DS4432U%2B/Analog%20Devices
-https://componentsearchengine.com/part-view/ABM10AIG-12.000MHZ-2Z-T/ABRACON
-https://componentsearchengine.com/part-view/XC6222D331MR-G/Torex
