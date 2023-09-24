@@ -146,22 +146,22 @@ void setup()
     // SPI.setCS(5);
     SPI.begin();
 
-    button_init(&btn_y, 7);
-    button_init(&btn_b, 8);
-    button_init(&btn_a, 9);
-    button_init(&btn_x, 10);
-    button_init(&btn_l, 11);
-    button_init(&btn_r, 12);
-    button_init(&btn_select, 13);
-    button_init(&btn_start, 14);
-    button_init(&btn_home, 15);
+    button_init(&btn_y, 13);
+    button_init(&btn_b, 11);
+    button_init(&btn_a, 10);
+    button_init(&btn_x, 12);
+    button_init(&btn_l, 9);
+    button_init(&btn_r, 14);
+    button_init(&btn_select, 19);
+    button_init(&btn_start, 20);
+    button_init(&btn_home, 18);
     button_init(&btn_power, 16);
-    button_init(&btn_wifi, 17);
+    button_init(&btn_wifi, 22);
 
-    button_init(&hat_up, 18);
-    button_init(&hat_right, 19);
-    button_init(&hat_down, 20);
-    button_init(&hat_left, 21);
+    button_init(&hat_up, 7);
+    button_init(&hat_right, 17);
+    button_init(&hat_down, 21);
+    button_init(&hat_left, 8);
     hat_init(&hat, &hat_up, &hat_right, &hat_down, &hat_left);
 
     ds4432_init(&dac, &Wire);
@@ -191,8 +191,8 @@ void setup()
     handlers.r_stick = NULL;
     handlers.ext = handle_touchscreen;
 
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, LOW);
+    // pinMode(LED_BUILTIN, OUTPUT);
+    // digitalWrite(LED_BUILTIN, LOW);
 
     delay(5000);
 }
