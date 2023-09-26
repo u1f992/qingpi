@@ -7,7 +7,7 @@
 
 typedef struct
 {
-    ds4432_t *dac_;
+    DS4432 *dac_;
 } slidepad_t;
 
 const uint8_t SLIDEPAD_NEUTRAL = 128;
@@ -50,7 +50,7 @@ inline void slidepad_release(slidepad_t *sp)
     slidepad_hold(sp, SLIDEPAD_NEUTRAL, SLIDEPAD_NEUTRAL);
 }
 
-inline void slidepad_init(slidepad_t *sp, ds4432_t *dac)
+inline void slidepad_init(slidepad_t *sp, DS4432 *dac)
 {
     sp->dac_ = dac;
     slidepad_release(sp);

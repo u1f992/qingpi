@@ -4,26 +4,26 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-typedef struct
+typedef struct DS4432
 {
-    HardwareI2C *wire_;
-} ds4432_t;
+    HardwareI2C *wire;
+} DS4432;
 
-static const uint8_t DS4432_ADDRESS = (0x90U >> 1);
+#define DS4432_ADDRESS (0x90U >> 1)
 
-typedef enum
+typedef enum DS4432SignBit
 {
     DS4432_SINK,
     DS4432_SOURCE
-} ds4432_sign_bit_t;
+} DS4432SignBit;
 
-typedef enum
+typedef enum DS4432MemoryAddress
 {
     DS4432_OUT0 = 0xF8U,
     DS4432_OUT1 = 0xF9U
-} ds4432_memory_address_t;
+} DS4432MemoryAddress;
 
-inline void ds4432_set(ds4432_t *dac, ds4432_memory_address_t addr, ds4432_sign_bit_t sign, uint8_t data)
+inline void ds4432_set(DS4432 *dac, DS4432MemoryAddress addr, DS4432SignBit sign, uint8_t data)
 {
     if (0b111'1111 < data)
     {
@@ -32,15 +32,15 @@ inline void ds4432_set(ds4432_t *dac, ds4432_memory_address_t addr, ds4432_sign_
 
     uint8_t d = ((uint8_t)sign << 7) | data;
 
-    dac->wire_->beginTransmission(DS4432_ADDRESS);
-    dac->wire_->write((uint8_t)addr);
-    dac->wire_->write(d);
-    dac->wire_->endTransmission();
+    dac->wire->beginTransmission(DS4432_ADDRESS);
+    dac->wire->write((uint8_t)addr);
+    dac->wire->write(d);
+    dac->wire->endTransmission();
 }
 
-inline void ds4432_init(ds4432_t *dac, HardwareI2C *wire)
+inline void ds4432_new(DS4432 *dac, HardwareI2C *wire)
 {
-    dac->wire_ = wire;
+    dac->wire = wire;
 }
 
 #endif

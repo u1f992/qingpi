@@ -7,6 +7,7 @@
 #include "slidepad.h"
 #include "touchscreen.h"
 
+#include "xtrbss.h"
 #include "nxmc2.h"
 
 static button_t btn_y;
@@ -108,7 +109,7 @@ void handle_hat(nxmc2_hat_t state)
     hat_hold(&hat, (hat_direction_t)state);
 }
 
-static ds4432_t dac;
+static DS4432 dac;
 static slidepad_t sp;
 void handle_slidepad(uint8_t x, uint8_t y)
 {
@@ -118,8 +119,8 @@ void handle_slidepad(uint8_t x, uint8_t y)
         slidepad_release(&sp);
 }
 
-static ad840x_t pots;
-static g3vm_xwr_t relay;
+static AD840X pots;
+static G3VM_XWR relay;
 static touchscreen_t ts;
 void handle_touchscreen(uint8_t x_low, uint8_t x_high, uint8_t y)
 {
@@ -164,11 +165,11 @@ void setup()
     button_init(&hat_left, 8);
     hat_init(&hat, &hat_up, &hat_right, &hat_down, &hat_left);
 
-    ds4432_init(&dac, &Wire);
+    ds4432_new(&dac, &Wire);
     slidepad_init(&sp, &dac);
 
-    ad840x_init(&pots, &SPI, 5, 4);
-    g3vm_xwr_init(&relay, 6);
+    ad840x_new(&pots, &SPI, 5, 4);
+    g3vm_xwr_new(&relay, 6);
     touchscreen_init(&ts, &pots, &relay);
 
     nxmc2_builder_init(&builder);

@@ -3,26 +3,27 @@
 
 #include <Arduino.h>
 
-typedef struct
+typedef struct G3VM_XWR
 {
-    pin_size_t a_;
-} g3vm_xwr_t;
+    pin_size_t a;
+} G3VM_XWR;
 
-inline void g3vm_xwr_on(g3vm_xwr_t *relay)
+inline void g3vm_xwr_energize(G3VM_XWR *relay)
 {
-    digitalWrite(relay->a_, HIGH);
+    digitalWrite(relay->a, HIGH);
 }
 
-inline void g3vm_xwr_off(g3vm_xwr_t *relay)
+inline void g3vm_xwr_de_energize(G3VM_XWR *relay)
 {
-    digitalWrite(relay->a_, LOW);
+    digitalWrite(relay->a, LOW);
 }
 
-inline void g3vm_xwr_init(g3vm_xwr_t *relay, pin_size_t a)
+inline void g3vm_xwr_new(G3VM_XWR *relay, pin_size_t a)
 {
-    relay->a_ = a;
-    pinMode(relay->a_, OUTPUT);
-    g3vm_xwr_off(relay);
+    relay->a = a;
+
+    pinMode(relay->a, OUTPUT);
+    g3vm_xwr_de_energize(relay);
 }
 
 #endif
