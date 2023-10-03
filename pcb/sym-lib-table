@@ -6,4 +6,5 @@
   (lib (name "LP38690SD-3_3_NOPB")(type "KiCad")(uri "${KIPRJMOD}/lib/LIB_LP38690SD-3.3_NOPB/LP38690SD-3.3_NOPB/KiCad/LP38690SD-3_3_NOPB.kicad_sym")(options "")(descr ""))
   (lib (name "RP2040")(type "KiCad")(uri "${KIPRJMOD}/lib/LIB_RP2040/RP2040/KiCad/RP2040.kicad_sym")(options "")(descr ""))
   (lib (name "W25Q16JVUXIQ")(type "KiCad")(uri "${KIPRJMOD}/lib/LIB_W25Q16JVUXIQ/W25Q16JVUXIQ/KiCad/W25Q16JVUXIQ.kicad_sym")(options "")(descr ""))
+  (lib (name "THD0515-24CL-SN")(type "KiCad")(uri "${KIPRJMOD}/lib/THD0515-24CL-SN/THD0515-24CL-SN.kicad_sym")(options "")(descr ""))
 )
