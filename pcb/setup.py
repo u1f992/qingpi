@@ -61,10 +61,12 @@ LIB_DIR = "./lib"
 LCSC_COMPONENTS = [
     LCSCComponent(name="AD8403ARUZ1-REEL", id="C652783"),
     LCSCComponent(name="DS4432U+T&R", id="C2679620"),
-    LCSCComponent(name="LP38690SD-3.3_NOPB", id="C130003"),
     LCSCComponent(name="RP2040", id="C2040"),
     LCSCComponent(name="W25Q16JVUXIQ", id="C2843335"),
     LCSCComponent(name="THD0515-24CL-SN", id="C283150"),
+    LCSCComponent(name="AP2112K-3.3TRG1", id="C51118"),
+    # Alt: LCSCComponent(name="NCP114BSN330T1G", id="C327507")
+    LCSCComponent(name="TYPE-C-31-M-12", id="C165948"),
 ]
 LOCAL_ZIP_REQUIRED = [
     ZipComponent(
