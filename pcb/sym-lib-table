@@ -6,6 +6,6 @@
   (lib (name "RP2040")(type "KiCad")(uri "${KIPRJMOD}/lib/RP2040/RP2040.kicad_sym")(options "")(descr ""))
   (lib (name "DS4432U+T&R")(type "KiCad")(uri "${KIPRJMOD}/lib/DS4432U+T&R/DS4432U+T&R.kicad_sym")(options "")(descr ""))
   (lib (name "AD8403ARUZ1-REEL")(type "KiCad")(uri "${KIPRJMOD}/lib/AD8403ARUZ1-REEL/AD8403ARUZ1-REEL.kicad_sym")(options "")(descr ""))
-  (lib (name "G3VM-31WR_TR05_")(type "KiCad")(uri "${KIPRJMOD}/lib/G3VM-31WR_TR05_/G3VM-31WR_TR05_.kicad_sym")(options "")(descr ""))
   (lib (name "THD0515-24CL-SN")(type "KiCad")(uri "${KIPRJMOD}/lib/THD0515-24CL-SN/THD0515-24CL-SN.kicad_sym")(options "")(descr ""))
+  (lib (name "ADG801BRTZ-REEL7")(type "KiCad")(uri "${KIPRJMOD}/lib/ADG801BRTZ-REEL7/ADG801BRTZ-REEL7.kicad_sym")(options "")(descr ""))
 )

@@ -67,27 +67,28 @@ LCSC_COMPONENTS = [
     LCSCComponent(name="AP2112K-3.3TRG1", id="C51118"),
     # Alt: LCSCComponent(name="NCP114BSN330T1G", id="C327507")
     LCSCComponent(name="TYPE-C-31-M-12", id="C165948"),
+    LCSCComponent(name="ADG801BRTZ-REEL7", id="C208016")
 ]
 LOCAL_ZIP_REQUIRED = [
-    ZipComponent(
-        zip="LIB_G3VM-31WR_TR05_.zip",
-        source="https://componentsearchengine.com/part-view/G3VM-31WR(TR05)/Omron%20Electronics",
-        name="G3VM-31WR_TR05_",
-        files=[
-            ZipComponentFile(
-                source="G3VM-31WR_TR05_/3D/G3VM-31WR_TR05_.stp",
-                dest="G3VM-31WR_TR05_.stp",
-            ),
-            ZipComponentFile(
-                source="G3VM-31WR_TR05_/KiCad/G3VM-31WR_TR05_.kicad_sym",
-                dest="G3VM-31WR_TR05_.kicad_sym",
-            ),
-            ZipComponentFile(
-                source="G3VM-31WR_TR05_/KiCad/G3VM31WRTR05.kicad_mod",
-                dest="G3VM-31WR_TR05_.pretty/G3VM-31WR_TR05_.kicad_mod",
-            ),
-        ],
-    ),
+    # ZipComponent(
+    #     zip="LIB_G3VM-31WR_TR05_.zip",
+    #     source="https://componentsearchengine.com/part-view/G3VM-31WR(TR05)/Omron%20Electronics",
+    #     name="G3VM-31WR_TR05_",
+    #     files=[
+    #         ZipComponentFile(
+    #             source="G3VM-31WR_TR05_/3D/G3VM-31WR_TR05_.stp",
+    #             dest="G3VM-31WR_TR05_.stp",
+    #         ),
+    #         ZipComponentFile(
+    #             source="G3VM-31WR_TR05_/KiCad/G3VM-31WR_TR05_.kicad_sym",
+    #             dest="G3VM-31WR_TR05_.kicad_sym",
+    #         ),
+    #         ZipComponentFile(
+    #             source="G3VM-31WR_TR05_/KiCad/G3VM31WRTR05.kicad_mod",
+    #             dest="G3VM-31WR_TR05_.pretty/G3VM-31WR_TR05_.kicad_mod",
+    #         ),
+    #     ],
+    # ),
 ]
 
 
