@@ -1,0 +1,143 @@
+(footprint "THD0515-24CL-SN_FPC" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (attr smd)
+  (fp_text reference "REF**" (at 0.35 -0.5 unlocked) (layer "F.SilkS") hide
+      (effects (font (size 1 1) (thickness 0.1)))
+    (tstamp 6f6d4abe-f78d-4409-9df9-8ce48b0be842)
+  )
+  (fp_text value "THD0515-24CL-SN_FPC" (at 6.25 -2.7 unlocked) (layer "F.Fab")
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 709385cb-7540-42dd-8925-59181b58ac88)
+  )
+  (fp_text user "${REFERENCE}" (at 6.25 -1.2 unlocked) (layer "F.Fab")
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 64fd8cbe-7a5b-4d94-97cc-58cc6df3f834)
+  )
+  (fp_text_box "Stick the stiffener on the back side.\nMaterial : Polyimide\nTotal thickness : 0.3mm"
+  (start 12.5 0.05) (end 42.4 5.95) (layer "Cmts.User") (tstamp f85cd3b5-a8f2-40fc-9be1-2d86d8840b13)
+      (effects (font (size 1 1) (thickness 0.15)) (justify left top))
+  )
+  (fp_rect (start 0 0.3) (end 12.5 4)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "F.Mask") (tstamp 638327fb-1e60-46a1-860d-beb5c97143bd))
+  (fp_rect (start 0.3 0) (end 12.2 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "F.Mask") (tstamp edc9c828-535e-47d3-a7b7-914916b58c51))
+  (fp_circle (center 0.3 0.3) (end 0.6 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "F.Mask") (tstamp 4d154f97-26e8-4d30-bbe5-fa811581756b))
+  (fp_circle (center 12.2 0.3) (end 12.5 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "F.Mask") (tstamp a450b4e9-166c-46be-a3ac-d941c6c2c7dd))
+  (fp_rect (start 0 0.3) (end 12.5 6)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "Cmts.User") (tstamp dddc5474-0cc3-4cc8-8cc2-c88c33e88f63))
+  (fp_rect (start 0.3 0) (end 12.2 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "Cmts.User") (tstamp 4a196eda-0748-45bd-bf34-1fcb2c884633))
+  (fp_circle (center 0.3 0.3) (end 0.6 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "Cmts.User") (tstamp db5b1bac-f385-407a-ab39-a727d9ccbc78))
+  (fp_circle (center 12.2 0.3) (end 12.5 0.3)
+    (stroke (width 0.05) (type solid)) (fill solid) (layer "Cmts.User") (tstamp 4b656262-ad53-46e5-8f06-54d19b9f349e))
+  (fp_line (start 0 0.3) (end 0 6)
+    (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp ee7db7a8-c31f-4879-b01c-e8f6d67fae7a))
+  (fp_line (start 0.3 0) (end 12.2 0)
+    (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp 454f2796-a1bc-4d67-b1a4-74d86f172810))
+  (fp_line (start 12.5 0.3) (end 12.5 6)
+    (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp e6989c61-358c-45dd-8282-6c2b525b436a))
+  (fp_arc (start 0 0.3) (mid 0.087868 0.087868) (end 0.3 0)
+    (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp 93036cb8-0eab-4bc0-a0cd-d34a1fe43246))
+  (fp_arc (start 12.2 0) (mid 12.412132 0.087868) (end 12.5 0.3)
+    (stroke (width 0.05) (type default)) (layer "Edge.Cuts") (tstamp 01a26c21-43ba-4a48-ae6c-f2b6c7ec55e8))
+  (pad "1" smd rect (at 0.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 85ffde5d-a016-437e-842f-d3bee8dbf32e))
+  (pad "2" smd rect (at 1 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 1614ea4c-fe4e-4f89-8630-6628de8a165a))
+  (pad "3" smd rect (at 1.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 25e2494b-fed0-4e73-9540-f462da3b7345))
+  (pad "4" smd rect (at 2 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp f1bed10a-2375-4e96-b6d0-3a740fe8cfc3))
+  (pad "5" smd rect (at 2.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 2eb57134-da7b-4089-90f7-de153612cb5b))
+  (pad "6" smd rect (at 3 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 98e5ff01-c7f7-4c6d-b05e-11d35eb63334))
+  (pad "7" smd rect (at 3.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp f974dab8-2595-4b74-a4ec-12e8818ada26))
+  (pad "8" smd rect (at 4 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 0c5436b1-de06-43b2-b7f3-3d1a1c56c7b8))
+  (pad "9" smd rect (at 4.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 9cd14377-7d7c-477d-9711-2b41a296d314))
+  (pad "10" smd rect (at 5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 8365ab60-06ae-4148-8e7c-213ff01076a0))
+  (pad "11" smd rect (at 5.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 180d0e06-d6a5-40e1-9d94-ed886f1ff07e))
+  (pad "12" smd rect (at 6 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 72cd2913-5569-45e1-aeff-7dd4fc09c069))
+  (pad "13" smd rect (at 6.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 61083902-ca3b-4416-acd1-566bce30e089))
+  (pad "14" smd rect (at 7 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 90330423-10a8-4bf1-b6c2-fc736cae7916))
+  (pad "15" smd rect (at 7.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp ab0ffb4e-7e24-434d-9dde-9f9ec03ef964))
+  (pad "16" smd rect (at 8 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp f4b0d19c-11ad-4e40-9d95-4fe3fae46f0d))
+  (pad "17" smd rect (at 8.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 62eacbf3-5f86-4bd9-8293-88b63279ed3d))
+  (pad "18" smd rect (at 9 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 8c9fc206-e750-4020-b414-4cadea659523))
+  (pad "19" smd rect (at 9.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 551a166c-8f55-4ce0-9fa1-810661bc99fc))
+  (pad "20" smd rect (at 10 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 5aaeebbb-04f3-4d7a-bc84-328a505ffd19))
+  (pad "21" smd rect (at 10.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 4ca93f4c-170e-48f2-8b11-ba267fd99ad2))
+  (pad "22" smd rect (at 11 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 86c713c5-66c9-4fbd-9628-4ea82ea30a01))
+  (pad "23" smd rect (at 11.5 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp 300c28f2-32aa-4186-96fa-064861b144f3))
+  (pad "24" smd rect (at 12 2) (size 0.3 4) (layers "F.Cu" "F.Paste" "F.Mask")
+    (thermal_bridge_angle 45) (tstamp c10abe6e-7447-4e01-a0a6-a91f0e9aebcd))
+  (group "" (id 1e3ac677-1a3e-4931-a121-d6b9e3486ebf)
+    (members
+      01a26c21-43ba-4a48-ae6c-f2b6c7ec55e8
+      0c5436b1-de06-43b2-b7f3-3d1a1c56c7b8
+      1614ea4c-fe4e-4f89-8630-6628de8a165a
+      180d0e06-d6a5-40e1-9d94-ed886f1ff07e
+      25e2494b-fed0-4e73-9540-f462da3b7345
+      2eb57134-da7b-4089-90f7-de153612cb5b
+      300c28f2-32aa-4186-96fa-064861b144f3
+      454f2796-a1bc-4d67-b1a4-74d86f172810
+      4ca93f4c-170e-48f2-8b11-ba267fd99ad2
+      551a166c-8f55-4ce0-9fa1-810661bc99fc
+      5aaeebbb-04f3-4d7a-bc84-328a505ffd19
+      61083902-ca3b-4416-acd1-566bce30e089
+      62eacbf3-5f86-4bd9-8293-88b63279ed3d
+      72cd2913-5569-45e1-aeff-7dd4fc09c069
+      8365ab60-06ae-4148-8e7c-213ff01076a0
+      85ffde5d-a016-437e-842f-d3bee8dbf32e
+      86c713c5-66c9-4fbd-9628-4ea82ea30a01
+      8c9fc206-e750-4020-b414-4cadea659523
+      90330423-10a8-4bf1-b6c2-fc736cae7916
+      93036cb8-0eab-4bc0-a0cd-d34a1fe43246
+      98e5ff01-c7f7-4c6d-b05e-11d35eb63334
+      9cd14377-7d7c-477d-9711-2b41a296d314
+      ab0ffb4e-7e24-434d-9dde-9f9ec03ef964
+      c10abe6e-7447-4e01-a0a6-a91f0e9aebcd
+      e6989c61-358c-45dd-8282-6c2b525b436a
+      ee7db7a8-c31f-4879-b01c-e8f6d67fae7a
+      f1bed10a-2375-4e96-b6d0-3a740fe8cfc3
+      f4b0d19c-11ad-4e40-9d95-4fe3fae46f0d
+      f974dab8-2595-4b74-a4ec-12e8818ada26
+    )
+  )
+  (group "" (id e91df2b7-fc62-4d6e-821d-1c6ae7409170)
+    (members
+      4d154f97-26e8-4d30-bbe5-fa811581756b
+      638327fb-1e60-46a1-860d-beb5c97143bd
+      a450b4e9-166c-46be-a3ac-d941c6c2c7dd
+      edc9c828-535e-47d3-a7b7-914916b58c51
+    )
+  )
+  (group "B.Stiffener" (id 6ccb37f0-4af2-41bb-a6d6-0771bf044e89)
+    (members
+      4a196eda-0748-45bd-bf34-1fcb2c884633
+      4b656262-ad53-46e5-8f06-54d19b9f349e
+      db5b1bac-f385-407a-ab39-a727d9ccbc78
+      dddc5474-0cc3-4cc8-8cc2-c88c33e88f63
+    )
+  )
+)
