@@ -13,8 +13,8 @@ typedef struct
 } touchscreen_t;
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  * @code {.unparsed}
  * │
  * U1─┐
@@ -26,12 +26,12 @@ typedef struct
  * U2─┘
  * │
  * @endcode
- * 
- * @param pots 
- * @param addr1 
- * @param addr2 
- * @param addr3 
- * @param data 
+ *
+ * @param pots
+ * @param addr1
+ * @param addr2
+ * @param addr3
+ * @param data
  */
 inline void ad840x_triple_set_(AD840X *pots, AD840XAddress addr1, AD840XAddress addr2, AD840XAddress addr3, uint16_t data)
 {
@@ -60,7 +60,7 @@ inline void touchscreen_hold(touchscreen_t *ts, uint16_t x, uint8_t y)
     {
         return;
     }
-    ad840x_triple_set_(ts->pots_, AD840X_RDAC1, AD840X_RDAC3, AD840X_RDAC4, rescale_(x, 1, 320, 0, 510));
+    ad840x_triple_set_(ts->pots_, AD840X_RDAC3, AD840X_RDAC1, AD840X_RDAC4, rescale_(x, 1, 320, 0, 510));
     ad840x_set(ts->pots_, AD840X_RDAC2, rescale_(y, 1, 240, 0, 255));
     ad840x_power_on(ts->pots_);
     g3vm_xwr_energize(ts->relay_);
