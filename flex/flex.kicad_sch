@@ -520,13 +520,13 @@
   (symbol (lib_id "Connector:Conn_01x24_Pin") (at 71.12 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 01c73f24-9586-43be-8000-e13ba6e6d5ac)
-    (property "Reference" "J1" (at 71.755 46.99 0)
+    (property "Reference" "e1" (at 71.755 46.99 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x24_Pin" (at 71.755 49.53 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "lib:3ds_ll" (at 71.12 78.74 0)
+    (property "Footprint" "3DS_LL:3DS_LL" (at 71.12 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 71.12 78.74 0)
@@ -559,7 +559,7 @@
     (instances
       (project "flex"
         (path "/9ae2b03a-48a0-445d-83ec-edfc9c6f4ccc"
-          (reference "J1") (unit 1)
+          (reference "e1") (unit 1)
         )
       )
     )
@@ -574,7 +574,7 @@
     (property "Value" "Conn_01x24_Pin" (at 93.345 49.53 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "lib:bss" (at 93.98 78.74 0)
+    (property "Footprint" "THD0515-24CL-SN_FPC:THD0515-24CL-SN_FPC" (at 93.98 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 93.98 78.74 0)
