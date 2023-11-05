@@ -1,5 +1,9 @@
 # NeoControllerMod
 
+![](logo/logo.svg#gh-light-mode-only)
+
+![](logo/logo-white.svg#gh-dark-mode-only)
+
 NeoControllerMod is a project for externally controlling the Nintendo 3DS series via serial communication.
 
 - PCB, FPC, firmware and sample applications included.
@@ -21,3 +25,9 @@ For some reason, however, in Japan software mod is strongly condemned, but hardw
 ## Disclaimer
 
 This is a fan project and the author assumes no responsibility for any 3DS hardware modifications. Use at your own risk and discretion.
+
+## Acknowledgments
+
+- [3DS controller mod](https://3dscapture.com/controller/) by loopy
+- [3xtDS](https://github.com/dekuNukem/3xtDS) by dekuNukem
+- [Pretendo Version 2](https://www.deviantart.com/jackster3000/art/Pretendo-Version-2-7242224) font by Jackster3000
