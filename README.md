@@ -1,10 +1,10 @@
-# NeoControllerMod
+# NeoCtrlMod
 
 ![](logo/logo.svg#gh-light-mode-only)
 
 ![](logo/logo-white.svg#gh-dark-mode-only)
 
-NeoControllerMod is a project for externally controlling the Nintendo 3DS series via serial communication.
+NeoCtrlMod is a project for externally controlling the Nintendo 3DS series via serial communication.
 
 - PCB, FPC, firmware and sample applications included.
   - Small enough to fit in a original housing.

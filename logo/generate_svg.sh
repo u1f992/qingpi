@@ -20,7 +20,7 @@ convert \
     -fill black \
     -font Pretendo \
     -pointsize 500 \
-    label:"NeoControllerMod" \
+    label:"NeoCtrlMod" \
     string.png
 convert -size 200x1 xc:transparent spacer.png
 convert icon.png spacer.png string.png \
