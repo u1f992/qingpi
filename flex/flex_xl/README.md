@@ -1,6 +1,6 @@
-# flex
+# FPC for 3DS XL
 
-## Notes on JLCPCB order
+## JLCPCB order
 
 <dl>
 <dt>PCB Thickness</dt><dd>0.11</dd>

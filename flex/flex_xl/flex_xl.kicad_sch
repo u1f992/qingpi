@@ -526,7 +526,7 @@
     (property "Value" "Conn_01x24_Pin" (at 71.755 49.53 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "3DS_LL:3DS_LL" (at 71.12 78.74 0)
+    (property "Footprint" "3ds_xl:3ds_xl" (at 71.12 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 71.12 78.74 0)
@@ -557,7 +557,7 @@
     (pin "8" (uuid 038508a1-99ad-4b74-98b1-1593c6b52dd2))
     (pin "9" (uuid a2645981-5633-428c-8f5f-8df35ceee814))
     (instances
-      (project "flex"
+      (project "flex_xl"
         (path "/9ae2b03a-48a0-445d-83ec-edfc9c6f4ccc"
           (reference "e1") (unit 1)
         )
@@ -605,7 +605,7 @@
     (pin "8" (uuid 7f6681c8-84b1-4e7a-a895-24087d8f75a9))
     (pin "9" (uuid add6b39b-f773-4c1c-8a56-0f1479e0c624))
     (instances
-      (project "flex"
+      (project "flex_xl"
         (path "/9ae2b03a-48a0-445d-83ec-edfc9c6f4ccc"
           (reference "J2") (unit 1)
         )
