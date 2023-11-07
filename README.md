@@ -24,7 +24,7 @@ For some reason, however, in Japan software mod is strongly condemned, but hardw
 
 ## Disclaimer
 
-This is a fan project and the author assumes no responsibility for any 3DS hardware modifications. Use at your own risk and discretion.
+This is an unofficial project and the author assumes no responsibility for any 3DS hardware modifications. Use at your own risk and discretion.
 
 ## Acknowledgments
 
