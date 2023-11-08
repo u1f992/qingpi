@@ -1,6 +1,6 @@
-# pcb
+# PCB
 
-## Notes on JLCPCB order
+## JLCPCB order
 
 ### PCB
 
