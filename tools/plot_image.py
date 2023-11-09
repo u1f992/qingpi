@@ -6,7 +6,8 @@ import time
 import cv2
 import serial
 
-import touchscreen
+import ncm
+from ncm import *
 
 
 def get_non_transparent_coordinates(img: cv2.Mat) -> list[tuple[int, int]]:
@@ -28,19 +29,36 @@ def main(args: argparse.Namespace) -> None:
     coords = get_non_transparent_coordinates(img)
 
     sp = serial.Serial(port=args.port, baudrate=9600)
+    hold, release = ncm.init(sp)
+
+    def erase_screen():
+        hold(TouchScreen(300, 220))
+        time.sleep(0.5)
+        release()
+        time.sleep(1.5)
+
+        hold(TouchScreen(300, 180))
+        time.sleep(0.5)
+        release()
+        time.sleep(1.5)
+
+        hold(TouchScreen(270, 200))
+        time.sleep(0.5)
+        release()
+        time.sleep(5)
 
     time.sleep(0.5)
-    touchscreen.release(sp)
+    release()
     time.sleep(0.5)
-    touchscreen.erase_screen(sp)
+    erase_screen()
 
     random.shuffle(coords)
     for i, (x, y) in enumerate(coords):
-        touchscreen.hold(sp, x, y)
+        hold(TouchScreen(x, y))
         time.sleep(0.05)
-        touchscreen.release(sp)
+        release()
         time.sleep(0.05)
-        
+
         print(i / len(coords))
 
 
