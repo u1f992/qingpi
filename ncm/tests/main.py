@@ -112,14 +112,14 @@ def main():
     release(Hat)
     assert mock.state == INIT_STATE
 
-    hold(LeftSlidePad(0, 0))
+    hold(SlidePad(0, 0))
     assert mock.state == (
         ButtonFlag(0),
         HAT_NEUTRAL,
         (0, 0),
         TOUCHSCREEN_RELEASED,
     )
-    release(LeftSlidePad)
+    release(SlidePad)
     assert mock.state == INIT_STATE
 
     hold(TouchScreen(1, 1))
@@ -141,7 +141,7 @@ def main():
         WIRELESS,
         HOME,
         UPLEFT,
-        LeftSlidePad(255, 255),
+        SlidePad(255, 255),
         TouchScreen(320, 240),
     )
     assert mock.state == (
