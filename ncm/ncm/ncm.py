@@ -56,7 +56,7 @@ UPLEFT = Hat.UPLEFT
 
 
 @dataclasses.dataclass(frozen=True)
-class LeftSlidePad:
+class SlidePad:
     """
     The upper left corner of the coord is (0,0) and the lower right one is (255,255).
     
@@ -90,8 +90,8 @@ class _Writer(typing.Protocol):
         raise NotImplementedError()
 
 
-_HoldOp = Button | Hat | LeftSlidePad | TouchScreen
-_ReleaseOp = Button | type[Button] | type[Hat] | type[LeftSlidePad] | type[TouchScreen]
+_HoldOp = Button | Hat | SlidePad | TouchScreen
+_ReleaseOp = Button | type[Button] | type[Hat] | type[SlidePad] | type[TouchScreen]
 
 
 def init(writer: _Writer):
@@ -124,7 +124,7 @@ def init(writer: _Writer):
             elif isinstance(op, Hat):
                 state[3] = int(op)
 
-            elif isinstance(op, LeftSlidePad):
+            elif isinstance(op, SlidePad):
                 state[4] = op.x
                 state[5] = op.y
 
@@ -137,7 +137,7 @@ def init(writer: _Writer):
 
     def release(*ops: _ReleaseOp):
         if len(ops) == 0:
-            release(Button, Hat, LeftSlidePad, TouchScreen)
+            release(Button, Hat, SlidePad, TouchScreen)
             return
 
         for op in ops:
@@ -154,7 +154,7 @@ def init(writer: _Writer):
             elif op == Hat:
                 state[3] = HAT_NEUTRAL
 
-            elif op == LeftSlidePad:
+            elif op == SlidePad:
                 state[4] = SLIDEPAD_NEUTRAL
                 state[5] = SLIDEPAD_NEUTRAL
 
