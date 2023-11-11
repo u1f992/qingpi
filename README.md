@@ -16,6 +16,11 @@ NeoCtrlMod is a project for externally controlling the Nintendo 3DS series via s
 
 Currently provided only for 3DS XL, but the basic idea can be applied to Old 3DS/New 3DS/2DS series.
 
+<p>
+<img src="pcb/pcb_f.png" />
+<img src="pcb/pcb_b.png" />
+</p>
+
 ## Prehistory
 
 Automatic control of the 3DS by a microcontroller has already been realized with [3DS controller mod](https://3dscapture.com/controller/) by loopy or [3xtDS](https://github.com/dekuNukem/3xtDS) by dekuNukem, both of which are currently difficult to obtain or produce. Heard that outside of Japan it is common to use CFW for external control (and video), and hardware modifications may be seen as no longer necessary.

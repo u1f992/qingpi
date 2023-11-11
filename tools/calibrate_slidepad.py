@@ -4,7 +4,8 @@ import time
 
 import serial
 
-import slidepad
+import ncm
+from ncm import *
 
 
 def approximate_circle(center_x: float, center_y: float, radius: float):
@@ -30,39 +31,41 @@ def sort_points_clockwise(
 
 def main(args: argparse.Namespace):
     sp = serial.Serial(port=args.port, baudrate=9600)
+    hold, release = ncm.init(sp)
+
     time.sleep(2)
 
     try:
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
         for x in range(127, -1, -1):
-            slidepad.hold(sp, x, 128)
+            hold(LeftSlidePad(x, 128))
             time.sleep(0.025)
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
 
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
         for x in range(129, 256):
-            slidepad.hold(sp, x, 128)
+            hold(LeftSlidePad(x, 128))
             time.sleep(0.025)
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
 
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
         for y in range(127, -1, -1):
-            slidepad.hold(sp, 128, y)
+            hold(LeftSlidePad(128, y))
             time.sleep(0.025)
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
 
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
         for y in range(129, 256):
-            slidepad.hold(sp, 128, y)
+            hold(LeftSlidePad(128, y))
             time.sleep(0.025)
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
 
         # Draw circle
@@ -70,13 +73,13 @@ def main(args: argparse.Namespace):
             approximate_circle(127.5, 127.5, 127.5), 127.5, 127.5
         )
         for x, y in points:
-            slidepad.hold(sp, x, y)
+            hold(LeftSlidePad(x, y))
             time.sleep(0.01)
-        slidepad.release(sp)
+        release()
         time.sleep(0.5)
-    
+
     finally:
-        slidepad.release(sp)
+        release()
 
 
 if __name__ == "__main__":

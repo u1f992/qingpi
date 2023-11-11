@@ -3,45 +3,63 @@ import time
 
 import serial
 
-import touchscreen
+import ncm
+from ncm import *
 
 
 def main(args: argparse.Namespace):
     sp = serial.Serial(port=args.port, baudrate=9600)
+    hold, release = ncm.init(sp)
+
+    def erase_screen():
+        hold(TouchScreen(300, 220))
+        time.sleep(0.5)
+        release()
+        time.sleep(1.5)
+
+        hold(TouchScreen(300, 180))
+        time.sleep(0.5)
+        release()
+        time.sleep(1.5)
+
+        hold(TouchScreen(270, 200))
+        time.sleep(0.5)
+        release()
+        time.sleep(5)
 
     time.sleep(0.5)
-    touchscreen.release(sp)
+    release()
     time.sleep(0.5)
-    touchscreen.erase_screen(sp)
+    erase_screen()
 
     for x in range(1, 321):
-        touchscreen.hold(sp, x, 120)
+        hold(TouchScreen(x, 120))
         time.sleep(0.025)
-    touchscreen.release(sp)
+    release()
     time.sleep(5)
 
     for y in range(1, 241):
-        touchscreen.hold(sp, 160, y)
+        hold(TouchScreen(160, y))
         time.sleep(0.025)
-    touchscreen.release(sp)
+    release()
     time.sleep(5)
 
     for x in range(1, 321):
-        touchscreen.hold(sp, x, 1)
+        hold(TouchScreen(x, 1))
         time.sleep(0.025)
-    touchscreen.release(sp)
+    release()
     time.sleep(5)
 
     for y in range(1, 241):
-        touchscreen.hold(sp, 1, y)
+        hold(TouchScreen(1, y))
         time.sleep(0.025)
-    touchscreen.release(sp)
+    release()
     time.sleep(5)
 
     for y in range(1, 241):
-        touchscreen.hold(sp, 320, y)
+        hold(TouchScreen(320, y))
         time.sleep(0.025)
-    touchscreen.release(sp)
+    release()
     time.sleep(5)
 
 

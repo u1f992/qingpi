@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "ncm"
+version = "1.0.0"
+description = "Python library for NeoCtrlMod."
+authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
