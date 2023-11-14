@@ -7,8 +7,9 @@
 #include "slidepad.h"
 #include "touchscreen.h"
 
-#include "ncm.h"
 #include "nxmc2.h"
+
+#include "ncm.h"
 
 #include "gpio_adapter.h"
 #include "adg801.h"
@@ -18,6 +19,10 @@
 #include "ad840x.h"
 #include "ad840x_adapter.h"
 #include "ad840x_triple_adapter.h"
+
+#include "nxamf.h"
+#include "nxamf/nxmc2.h"
+#include "nxamf/pokecon.h"
 
 static button_t btn_y;
 static button_t btn_b;
