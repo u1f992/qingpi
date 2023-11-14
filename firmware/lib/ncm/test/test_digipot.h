@@ -1,6 +1,5 @@
 #include "ncm.h"
 
-#include <assert.h>
 #include <stdlib.h>
 
 typedef enum TestDigiPotState
