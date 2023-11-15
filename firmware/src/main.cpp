@@ -49,28 +49,51 @@ static const pin_size_t PIN_LED_BUILTIN = 25;
 static const pin_size_t PIN_I2C_SDA = 26;
 static const pin_size_t PIN_I2C_SCL = 27;
 
-static GPIOAdapter *gpio_y = gpio_adapter_new(PIN_Y);
-static GPIOAdapter *gpio_b = gpio_adapter_new(PIN_B);
-static GPIOAdapter *gpio_a = gpio_adapter_new(PIN_A);
-static GPIOAdapter *gpio_x = gpio_adapter_new(PIN_X);
-static GPIOAdapter *gpio_l = gpio_adapter_new(PIN_L);
-static GPIOAdapter *gpio_r = gpio_adapter_new(PIN_R);
-static GPIOAdapter *gpio_select = gpio_adapter_new(PIN_SELECT);
-static GPIOAdapter *gpio_start = gpio_adapter_new(PIN_START);
-static GPIOAdapter *gpio_home = gpio_adapter_new(PIN_HOME);
-static GPIOAdapter *gpio_power = gpio_adapter_new(PIN_POWER);
-static GPIOAdapter *gpio_wireless = gpio_adapter_new(PIN_WIRELESS);
-static NcmButton *btn_y = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_y);
-static NcmButton *btn_b = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_b);
-static NcmButton *btn_a = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_a);
-static NcmButton *btn_x = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_x);
-static NcmButton *btn_l = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_l);
-static NcmButton *btn_r = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_r);
-static NcmButton *btn_select = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_select);
-static NcmButton *btn_start = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_start);
-static NcmButton *btn_home = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_home);
-static NcmButton *btn_power = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_power);
-static NcmButton *btn_wireless = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_wireless);
+static GPIOAdapter *gpio_y = NULL;
+static NcmButton *btn_y = NULL;
+static GPIOAdapter *gpio_b = NULL;
+static NcmButton *btn_b = NULL;
+static GPIOAdapter *gpio_a = NULL;
+static NcmButton *btn_a = NULL;
+static GPIOAdapter *gpio_x = NULL;
+static NcmButton *btn_x = NULL;
+static GPIOAdapter *gpio_l = NULL;
+static NcmButton *btn_l = NULL;
+static GPIOAdapter *gpio_r = NULL;
+static NcmButton *btn_r = NULL;
+static GPIOAdapter *gpio_select = NULL;
+static NcmButton *btn_select = NULL;
+static GPIOAdapter *gpio_start = NULL;
+static NcmButton *btn_start = NULL;
+static GPIOAdapter *gpio_home = NULL;
+static NcmButton *btn_home = NULL;
+static GPIOAdapter *gpio_power = NULL;
+static NcmButton *btn_power = NULL;
+static GPIOAdapter *gpio_wireless = NULL;
+static NcmButton *btn_wireless = NULL;
+
+static GPIOAdapter *gpio_up = NULL;
+static NcmButton *hat_up = NULL;
+static GPIOAdapter *gpio_right = NULL;
+static NcmButton *hat_right = NULL;
+static GPIOAdapter *gpio_down = NULL;
+static NcmButton *hat_down = NULL;
+static GPIOAdapter *gpio_left = NULL;
+static NcmButton *hat_left = NULL;
+static NcmHat *hat = NULL;
+
+static DS4432 *dac = NULL;
+static DS4432Adapter *dac_v = NULL;
+static DS4432Adapter *dac_h = NULL;
+static NcmSlidePad *sp = NULL;
+
+static AD840X *pots = NULL;
+static AD840XAdapter *pots_v = NULL;
+static AD840XTripleAdapter *pots_h = NULL;
+static ADG801 *sw = NULL;
+static ADG801Adapter *sw_adapter = NULL;
+static NcmTouchScreen *ts = NULL;
+
 void handle_y(nxmc2_button_t state)
 {
     if (state == NXMC2_BUTTON_PRESSED)
@@ -149,24 +172,11 @@ void handle_wireless(nxmc2_button_t state)
         ncm_button_release(btn_wireless);
 }
 
-static GPIOAdapter *gpio_up = gpio_adapter_new(PIN_UP);
-static GPIOAdapter *gpio_right = gpio_adapter_new(PIN_RIGHT);
-static GPIOAdapter *gpio_down = gpio_adapter_new(PIN_DOWN);
-static GPIOAdapter *gpio_left = gpio_adapter_new(PIN_UP);
-static NcmButton *hat_up = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_up);
-static NcmButton *hat_right = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_right);
-static NcmButton *hat_down = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_down);
-static NcmButton *hat_left = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_left);
-static NcmHat *hat = ncm_hat_new(hat_up, hat_right, hat_down, hat_left);
 void handle_hat(nxmc2_hat_t state)
 {
     ncm_hat_hold(hat, (NcmHatDirection)state);
 }
 
-static DS4432 *dac = ds4432_new(&Wire1);
-static DS4432Adapter *dac_v = ds4432_adapter_new(dac, DS4432_OUT1);
-static DS4432Adapter *dac_h = ds4432_adapter_new(dac, DS4432_OUT0);
-static NcmSlidePad *sp = ncm_slidepad_new((NcmCurrentDAConverterInterface *)dac_v, (NcmCurrentDAConverterInterface *)dac_h);
 void handle_slidepad(uint8_t x, uint8_t y)
 {
     if (x != NXMC2_STICK_NEUTRAL || y != NXMC2_STICK_NEUTRAL)
@@ -175,12 +185,6 @@ void handle_slidepad(uint8_t x, uint8_t y)
         ncm_slidepad_release(sp);
 }
 
-static AD840X *pots = ad840x_new(&SPI, PIN_SPI_CS, PIN_POTS_SHDN);
-static AD840XAdapter *pots_v = ad840x_adapter_new(pots, AD840X_RDAC2);
-static AD840XTripleAdapter *pots_h = ad840x_triple_adapter_new(pots, AD840X_RDAC3, AD840X_RDAC1, AD840X_RDAC4);
-static ADG801 *sw = adg801_new(PIN_SW_IN);
-static ADG801Adapter *sw_adapter = adg801_adapter_new(sw);
-static NcmTouchScreen *ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_v, (NcmSwitchInterface *)sw_adapter);
 void handle_touchscreen(uint8_t x_low, uint8_t x_high, uint8_t y)
 {
     uint16_t x = x_low | x_high << 8;
@@ -197,15 +201,77 @@ void setup()
 {
     Serial.begin(9600);
 
+    pinMode(PIN_Y, INPUT);
+    gpio_y = gpio_adapter_new(PIN_Y);
+    btn_y = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_y);
+    pinMode(PIN_B, INPUT);
+    gpio_b = gpio_adapter_new(PIN_B);
+    btn_b = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_b);
+    pinMode(PIN_A, INPUT);
+    gpio_a = gpio_adapter_new(PIN_A);
+    btn_a = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_a);
+    pinMode(PIN_X, INPUT);
+    gpio_x = gpio_adapter_new(PIN_X);
+    btn_x = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_x);
+    pinMode(PIN_L, INPUT);
+    gpio_l = gpio_adapter_new(PIN_L);
+    btn_l = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_l);
+    pinMode(PIN_R, INPUT);
+    gpio_r = gpio_adapter_new(PIN_R);
+    btn_r = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_r);
+    pinMode(PIN_SELECT, INPUT);
+    gpio_select = gpio_adapter_new(PIN_SELECT);
+    btn_select = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_select);
+    pinMode(PIN_START, INPUT);
+    gpio_start = gpio_adapter_new(PIN_START);
+    btn_start = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_start);
+    pinMode(PIN_HOME, INPUT);
+    gpio_home = gpio_adapter_new(PIN_HOME);
+    btn_home = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_home);
+    pinMode(PIN_POWER, INPUT);
+    gpio_power = gpio_adapter_new(PIN_POWER);
+    btn_power = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_power);
+    pinMode(PIN_WIRELESS, INPUT);
+    gpio_wireless = gpio_adapter_new(PIN_WIRELESS);
+    btn_wireless = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_wireless);
+
+    pinMode(PIN_UP, INPUT);
+    gpio_up = gpio_adapter_new(PIN_UP);
+    hat_up = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_up);
+    pinMode(PIN_RIGHT, INPUT);
+    gpio_right = gpio_adapter_new(PIN_RIGHT);
+    hat_right = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_right);
+    pinMode(PIN_DOWN, INPUT);
+    gpio_down = gpio_adapter_new(PIN_DOWN);
+    hat_down = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_down);
+    pinMode(PIN_LEFT, INPUT);
+    gpio_left = gpio_adapter_new(PIN_LEFT);
+    hat_left = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_left);
+    hat = ncm_hat_new(hat_up, hat_right, hat_down, hat_left);
+
     Wire1.setSDA(PIN_I2C_SDA);
     Wire1.setSCL(PIN_I2C_SCL);
     Wire1.begin();
+    dac = ds4432_new(&Wire1);
+    dac_v = ds4432_adapter_new(dac, DS4432_OUT1);
+    dac_h = ds4432_adapter_new(dac, DS4432_OUT0);
+    sp = ncm_slidepad_new((NcmCurrentDAConverterInterface *)dac_v, (NcmCurrentDAConverterInterface *)dac_h);
 
     SPI.setSCK(PIN_SPI_SCK);
     SPI.setTX(PIN_SPI_TX);
-    // SPI.setCS(PIN_SPI_CS);  // Not assigned to CS, a normal GPIO.
-    pinMode(PIN_SPI_CS, OUTPUT);
+    // SPI.setCS(PIN_SPI_CS);
+    pinMode(PIN_SPI_CS, OUTPUT); // PIN_SPI_CS is not assigned to CS, but a normal GPIO.
+    digitalWrite(PIN_SPI_CS, HIGH);
     SPI.begin();
+    pinMode(PIN_POTS_SHDN, OUTPUT);
+    digitalWrite(PIN_POTS_SHDN, LOW);
+    pots = ad840x_new(&SPI, PIN_SPI_CS, PIN_POTS_SHDN);
+    pots_v = ad840x_adapter_new(pots, AD840X_RDAC2);
+    pots_h = ad840x_triple_adapter_new(pots, AD840X_RDAC3, AD840X_RDAC1, AD840X_RDAC4);
+    pinMode(PIN_SW_IN, OUTPUT);
+    sw = adg801_new(PIN_SW_IN);
+    sw_adapter = adg801_adapter_new(sw);
+    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_v, (NcmSwitchInterface *)sw_adapter);
 
     assert(
         btn_y != NULL &&
@@ -243,8 +309,8 @@ void setup()
     handlers.r_stick = NULL;
     handlers.ext = handle_touchscreen;
 
-    // pinMode(LED_BUILTIN, OUTPUT);
-    // digitalWrite(LED_BUILTIN, LOW);
+    pinMode(PIN_LED_BUILTIN, OUTPUT);
+    digitalWrite(PIN_LED_BUILTIN, LOW);
 
     delay(5000);
 }
