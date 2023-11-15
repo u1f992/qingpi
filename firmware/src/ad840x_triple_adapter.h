@@ -97,9 +97,6 @@ AD840XTripleAdapter *ad840x_triple_adapter_new(AD840X *pots, AD840XAddress addr1
     self->addr2 = addr2;
     self->addr3 = addr3;
 
-    ad840x_triple_adapter_set_wiper_position((NcmDigitalPotentiometerInterface *)self, 0.0);
-    ad840x_triple_adapter_shutdown((NcmDigitalPotentiometerInterface *)self);
-
     return self;
 }
 
@@ -109,9 +106,6 @@ void ad840x_triple_adapter_delete(AD840XTripleAdapter *self)
     {
         return;
     }
-
-    ad840x_triple_adapter_set_wiper_position((NcmDigitalPotentiometerInterface *)self, 0.0);
-    ad840x_triple_adapter_shutdown((NcmDigitalPotentiometerInterface *)self);
-
+    
     free(self);
 }

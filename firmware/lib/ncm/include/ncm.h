@@ -9,7 +9,6 @@ extern "C"
 typedef struct NcmGeneralPurposeIOInterface
 {
     void (*set_low)(struct NcmGeneralPurposeIOInterface *self);
-    void (*set_high)(struct NcmGeneralPurposeIOInterface *self);
     void (*set_hi_z)(struct NcmGeneralPurposeIOInterface *self);
 } NcmGeneralPurposeIOInterface;
 

@@ -47,8 +47,6 @@ ADG801Adapter *adg801_adapter_new(ADG801 *sw)
 
     self->sw = sw;
 
-    adg801_adapter_off((NcmSwitchInterface *)self);
-
     return self;
 }
 
@@ -58,8 +56,6 @@ void adg801_adapter_delete(ADG801Adapter *self)
     {
         return;
     }
-
-    adg801_adapter_off((NcmSwitchInterface *)self);
 
     free(self);
 }

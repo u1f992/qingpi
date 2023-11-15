@@ -21,12 +21,6 @@ static void test_gpio_set_low(NcmGeneralPurposeIOInterface *parent)
     self->state = TEST_GPIO_LOW;
 }
 
-static void test_gpio_set_high(NcmGeneralPurposeIOInterface *parent)
-{
-    TestGPIO *self = (TestGPIO *)parent;
-    self->state = TEST_GPIO_HIGH;
-}
-
 static void test_gpio_set_hi_z(NcmGeneralPurposeIOInterface *parent)
 {
     TestGPIO *self = (TestGPIO *)parent;
@@ -42,7 +36,6 @@ TestGPIO *test_gpio_new(void)
     }
 
     self->parent.set_low = test_gpio_set_low;
-    self->parent.set_high = test_gpio_set_high;
     self->parent.set_hi_z = test_gpio_set_hi_z;
 
     self->state = TEST_GPIO_HI_Z;

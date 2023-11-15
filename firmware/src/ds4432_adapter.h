@@ -49,8 +49,6 @@ DS4432Adapter *ds4432_adapter_new(DS4432 *dac, DS4432MemoryAddress addr)
     self->dac = dac;
     self->addr = addr;
 
-    ds4432_adapter_source((NcmCurrentDAConverterInterface *)self, 0.0);
-
     return self;
 }
 
@@ -60,8 +58,6 @@ void ds4432_adapter_delete(DS4432Adapter *self)
     {
         return;
     }
-
-    ds4432_adapter_source((NcmCurrentDAConverterInterface *)self, 0.0);
 
     free(self);
 }
