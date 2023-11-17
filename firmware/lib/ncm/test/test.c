@@ -200,32 +200,32 @@ int test_slidepad(void)
            h->state == TEST_DAC_SOURCE && h->value == 0.0);
 
     ncm_slidepad_hold(sp, 0.0, 0.0);
-    if (!(v->state == TEST_DAC_SINK && v->value == 1.0 &&
-          h->state == TEST_DAC_SINK && h->value == 1.0))
+    if (!(v->state == TEST_DAC_SOURCE && v->value == 1.0 &&
+          h->state == TEST_DAC_SOURCE && h->value == 1.0))
     {
         index = 0;
         goto cleanup;
     }
 
     ncm_slidepad_hold(sp, 0.0, 1.0);
-    if (!(v->state == TEST_DAC_SOURCE && v->value == 1.0 &&
-          h->state == TEST_DAC_SINK && h->value == 1.0))
+    if (!(v->state == TEST_DAC_SINK && v->value == 1.0 &&
+          h->state == TEST_DAC_SOURCE && h->value == 1.0))
     {
         index = 1;
         goto cleanup;
     }
 
     ncm_slidepad_hold(sp, 1.0, 1.0);
-    if (!(v->state == TEST_DAC_SOURCE && v->value == 1.0 &&
-          h->state == TEST_DAC_SOURCE && h->value == 1.0))
+    if (!(v->state == TEST_DAC_SINK && v->value == 1.0 &&
+          h->state == TEST_DAC_SINK && h->value == 1.0))
     {
         index = 2;
         goto cleanup;
     }
 
     ncm_slidepad_hold(sp, 1.0, 0.0);
-    if (!(v->state == TEST_DAC_SINK && v->value == 1.0 &&
-          h->state == TEST_DAC_SOURCE && h->value == 1.0))
+    if (!(v->state == TEST_DAC_SOURCE && v->value == 1.0 &&
+          h->state == TEST_DAC_SINK && h->value == 1.0))
     {
         index = 3;
         goto cleanup;

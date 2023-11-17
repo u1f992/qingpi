@@ -1,14 +1,4 @@
-#include "ad840x.h"
-#include "ncm.h"
-
-typedef struct AD840XTripleAdapter
-{
-    NcmDigitalPotentiometerInterface parent;
-    AD840X *pots;
-    AD840XAddress addr1;
-    AD840XAddress addr2;
-    AD840XAddress addr3;
-} AD840XTripleAdapter;
+#include "adapters.h"
 
 static inline void ad840x_triple_set(AD840X *pots, AD840XAddress addr1, AD840XAddress addr2, AD840XAddress addr3, uint16_t data)
 {
@@ -64,17 +54,6 @@ static void ad840x_triple_adapter_shutdown(NcmDigitalPotentiometerInterface *par
     ad840x_shutdown(self->pots);
 }
 
-/**
- * │
- * U1─┐
- * │  │
- * x  │
- *    U3─
- * x  │
- * │  │
- * U2─┘
- * │
- */
 AD840XTripleAdapter *ad840x_triple_adapter_new(AD840X *pots, AD840XAddress addr1, AD840XAddress addr2, AD840XAddress addr3)
 {
     if (pots == NULL)

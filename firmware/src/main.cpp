@@ -2,43 +2,31 @@
 #include <SPI.h>
 #include <Wire.h>
 
-#include "button.h"
-#include "hat.h"
-#include "slidepad.h"
-#include "touchscreen.h"
-
-#include "nxmc2.h"
+#include "adapters.h"
 
 #include "ncm.h"
-
-#include "gpio_adapter.h"
-#include "adg801.h"
-#include "adg801_adapter.h"
-#include "ds4432.h"
-#include "ds4432_adapter.h"
-#include "ad840x.h"
-#include "ad840x_adapter.h"
-#include "ad840x_triple_adapter.h"
 
 #include "nxamf.h"
 #include "nxamf/nxmc2.h"
 #include "nxamf/pokecon.h"
 
-static const pin_size_t PIN_Y = 2;
-static const pin_size_t PIN_B = 3;
-static const pin_size_t PIN_A = 4;
-static const pin_size_t PIN_X = 5;
-static const pin_size_t PIN_L = 6;
-static const pin_size_t PIN_R = 7;
-static const pin_size_t PIN_SELECT = 8;
-static const pin_size_t PIN_START = 9;
-static const pin_size_t PIN_HOME = 10;
-static const pin_size_t PIN_POWER = 11;
-static const pin_size_t PIN_WIRELESS = 12;
-static const pin_size_t PIN_UP = 13;
-static const pin_size_t PIN_RIGHT = 14;
-static const pin_size_t PIN_DOWN = 15;
-static const pin_size_t PIN_LEFT = 16;
+#define NEOCTRLMOD_XL
+#ifdef NEOCTRLMOD_XL
+static const pin_size_t PIN_SELECT = 2;
+static const pin_size_t PIN_HOME = 3;
+static const pin_size_t PIN_START = 4;
+static const pin_size_t PIN_POWER = 5;
+static const pin_size_t PIN_LEFT = 6;
+static const pin_size_t PIN_DOWN = 7;
+static const pin_size_t PIN_UP = 8;
+static const pin_size_t PIN_RIGHT = 9;
+static const pin_size_t PIN_WIRELESS = 10;
+static const pin_size_t PIN_B = 11;
+static const pin_size_t PIN_X = 12;
+static const pin_size_t PIN_Y = 13;
+static const pin_size_t PIN_A = 14;
+static const pin_size_t PIN_R = 15;
+static const pin_size_t PIN_L = 16;
 // static const pin_size_t PIN_IRDA = 17;
 static const pin_size_t PIN_SPI_SCK = 18;
 static const pin_size_t PIN_SPI_TX = 19;
@@ -48,6 +36,7 @@ static const pin_size_t PIN_SW_IN = 22;
 static const pin_size_t PIN_LED_BUILTIN = 25;
 static const pin_size_t PIN_I2C_SDA = 26;
 static const pin_size_t PIN_I2C_SCL = 27;
+#endif
 
 static GPIOAdapter *gpio_y = NULL;
 static NcmButton *btn_y = NULL;
@@ -94,108 +83,135 @@ static ADG801 *sw = NULL;
 static ADG801Adapter *sw_adapter = NULL;
 static NcmTouchScreen *ts = NULL;
 
-void handle_y(nxmc2_button_t state)
+static const int SERIAL_INACTIVE_TIMEOUT = 100;
+static int inactive_count = 0;
+
+static Nxmc2Protocol *nxmc2;
+static PokeConProtocol *pokecon;
+static NxamfBytesProtocolInterface *protocols[2];
+static NxamfProtocolMultiplexer *mux;
+static NxamfBytesBuffer *buffer;
+
+static int64_t led_off(alarm_id_t id, void *user_data)
 {
-    if (state == NXMC2_BUTTON_PRESSED)
+    digitalWrite(PIN_LED_BUILTIN, LOW);
+    return false;
+}
+
+static void async_led_on_for_100ms()
+{
+    digitalWriteFast(PIN_LED_BUILTIN, HIGH);
+    alarm_id_t alarm_id = add_alarm_in_ms(100, led_off, NULL, false);
+}
+
+static void reflect_state(NxamfGamepadState *state)
+{
+    if (state == NULL)
+    {
+        return;
+    }
+
+    async_led_on_for_100ms();
+
+    if (state->y == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_y);
     else
         ncm_button_release(btn_y);
-}
-void handle_b(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->b == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_b);
     else
         ncm_button_release(btn_b);
-}
-void handle_a(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->a == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_a);
     else
         ncm_button_release(btn_a);
-}
-void handle_x(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->x == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_x);
     else
         ncm_button_release(btn_x);
-}
-void handle_l(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->l == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_l);
     else
         ncm_button_release(btn_l);
-}
-void handle_r(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->r == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_r);
     else
         ncm_button_release(btn_r);
-}
-void handle_select(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->minus == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_select);
     else
         ncm_button_release(btn_select);
-}
-void handle_start(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->plus == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_start);
     else
         ncm_button_release(btn_start);
-}
-void handle_home(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->home == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_home);
     else
         ncm_button_release(btn_home);
-}
-void handle_power(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->l_click == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_power);
     else
         ncm_button_release(btn_power);
-}
-void handle_wireless(nxmc2_button_t state)
-{
-    if (state == NXMC2_BUTTON_PRESSED)
+
+    if (state->r_click == NXAMF_BUTTON_STATE_PRESSED)
         ncm_button_hold(btn_wireless);
     else
         ncm_button_release(btn_wireless);
-}
 
-void handle_hat(nxmc2_hat_t state)
-{
-    ncm_hat_hold(hat, (NcmHatDirection)state);
-}
+    switch (state->hat)
+    {
+    case NXAMF_HAT_STATE_UP:
+        ncm_hat_hold(hat, NCM_HAT_UP);
+        break;
+    case NXAMF_HAT_STATE_UPRIGHT:
+        ncm_hat_hold(hat, NCM_HAT_UPRIGHT);
+        break;
+    case NXAMF_HAT_STATE_RIGHT:
+        ncm_hat_hold(hat, NCM_HAT_RIGHT);
+        break;
+    case NXAMF_HAT_STATE_DOWNRIGHT:
+        ncm_hat_hold(hat, NCM_HAT_DOWNRIGHT);
+        break;
+    case NXAMF_HAT_STATE_DOWN:
+        ncm_hat_hold(hat, NCM_HAT_DOWN);
+        break;
+    case NXAMF_HAT_STATE_DOWNLEFT:
+        ncm_hat_hold(hat, NCM_HAT_DOWNLEFT);
+        break;
+    case NXAMF_HAT_STATE_LEFT:
+        ncm_hat_hold(hat, NCM_HAT_LEFT);
+        break;
+    case NXAMF_HAT_STATE_UPLEFT:
+        ncm_hat_hold(hat, NCM_HAT_UPLEFT);
+        break;
+    case NXAMF_HAT_STATE_NEUTRAL:
+    default:
+        ncm_hat_release(hat);
+        break;
+    }
 
-void handle_slidepad(uint8_t x, uint8_t y)
-{
-    if (x != NXMC2_STICK_NEUTRAL || y != NXMC2_STICK_NEUTRAL)
-        ncm_slidepad_hold(sp, (double)x / 255, (double)y / 255);
+    if (state->l_stick.x != NXAMF_STICK_STATE_NEUTRAL || state->l_stick.y != NXAMF_STICK_STATE_NEUTRAL)
+        ncm_slidepad_hold(sp, (double)state->l_stick.x / 255, (double)state->l_stick.y / 255);
     else
         ncm_slidepad_release(sp);
-}
 
-void handle_touchscreen(uint8_t x_low, uint8_t x_high, uint8_t y)
-{
-    uint16_t x = x_low | x_high << 8;
-    if (0 < x && x <= 320 && 0 < y && y <= 240)
-        ncm_touchscreen_hold(ts, (double)x / 320, (double)y / 240);
+    uint16_t ts_x = state->extension[0] | state->extension[1] << 8;
+    uint8_t ts_y = state->extension[2];
+    if (0 < ts_x && ts_x <= 320 && 0 < ts_y && ts_y <= 240)
+        ncm_touchscreen_hold(ts, (double)ts_x / 320, (double)ts_y / 240);
     else
         ncm_touchscreen_release(ts);
 }
-
-static nxmc2_builder_t builder;
-static nxmc2_handlers_t handlers;
 
 void setup()
 {
@@ -271,7 +287,7 @@ void setup()
     pinMode(PIN_SW_IN, OUTPUT);
     sw = adg801_new(PIN_SW_IN);
     sw_adapter = adg801_adapter_new(sw);
-    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_v, (NcmSwitchInterface *)sw_adapter);
+    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_h, (NcmSwitchInterface *)sw_adapter);
 
     assert(
         btn_y != NULL &&
@@ -289,55 +305,56 @@ void setup()
         sp != NULL &&
         ts != NULL);
 
-    nxmc2_builder_init(&builder);
-    handlers.y = handle_y;
-    handlers.b = handle_b;
-    handlers.a = handle_a;
-    handlers.x = handle_x;
-    handlers.l = handle_l;
-    handlers.r = handle_r;
-    handlers.zl = NULL;
-    handlers.zr = NULL;
-    handlers.minus = handle_select;
-    handlers.plus = handle_start;
-    handlers.l_click = handle_power;
-    handlers.r_click = handle_wireless;
-    handlers.home = handle_home;
-    handlers.capture = NULL;
-    handlers.hat = handle_hat;
-    handlers.l_stick = handle_slidepad;
-    handlers.r_stick = NULL;
-    handlers.ext = handle_touchscreen;
+    nxmc2 = nxmc2_protocol_new();
+    pokecon = pokecon_protocol_new();
+    protocols[0] = (NxamfBytesProtocolInterface *)nxmc2;
+    protocols[1] = (NxamfBytesProtocolInterface *)pokecon;
+    mux = nxamf_protocol_multiplexer_new(protocols, 3);
+    buffer = nxamf_bytes_buffer_new((NxamfBytesProtocolInterface *)mux);
+    assert(
+        nxmc2 != NULL &&
+        pokecon != NULL &&
+        mux != NULL &&
+        buffer != NULL);
 
     pinMode(PIN_LED_BUILTIN, OUTPUT);
     digitalWrite(PIN_LED_BUILTIN, LOW);
 
-    delay(5000);
+    // Blink if the setup routine is successful.
+    digitalWrite(PIN_LED_BUILTIN, HIGH);
+    delay(200);
+    digitalWrite(PIN_LED_BUILTIN, LOW);
+    delay(200);
+    digitalWrite(PIN_LED_BUILTIN, HIGH);
+    delay(200);
+    digitalWrite(PIN_LED_BUILTIN, LOW);
+    delay(200);
+    digitalWrite(PIN_LED_BUILTIN, HIGH);
+    delay(200);
+    digitalWrite(PIN_LED_BUILTIN, LOW);
+    delay(200);
 }
-
-static const int SERIAL_TIMEOUT = 100;
-static int cnt = 0;
 
 void loop()
 {
     if (Serial.available() == 0)
     {
-        cnt++;
-        if (cnt == SERIAL_TIMEOUT)
+        inactive_count++;
+        if (SERIAL_INACTIVE_TIMEOUT < inactive_count)
         {
-            cnt = 0;
-            nxmc2_builder_clear(&builder);
+            inactive_count = 0;
+            nxamf_bytes_buffer_clear(buffer);
         }
         return;
     }
-    cnt = 0;
+    inactive_count = 0;
 
-    nxmc2_builder_append(&builder, Serial.read());
-    if (!nxmc2_builder_can_build(&builder))
+    uint8_t packet = Serial.read();
+    NxamfGamepadState *state = nxamf_bytes_buffer_append(buffer, packet);
+    if (state == NULL)
     {
         return;
     }
-    nxmc2_command_t *cmd = nxmc2_builder_build(&builder);
-    nxmc2_command_exec(cmd, &handlers);
-    nxmc2_builder_clear(&builder);
+
+    reflect_state(state);
 }

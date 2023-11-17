@@ -1,11 +1,4 @@
-#include "adg801.h"
-#include "ncm.h"
-
-typedef struct ADG801Adapter
-{
-    NcmSwitchInterface parent;
-    ADG801 *sw;
-} ADG801Adapter;
+#include "adapters.h"
 
 static void adg801_adapter_on(NcmSwitchInterface *parent)
 {

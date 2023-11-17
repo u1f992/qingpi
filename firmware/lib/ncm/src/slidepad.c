@@ -21,13 +21,13 @@ void ncm_slidepad_hold(NcmSlidePad *self, double x, double y)
     {
         // 0.5-1.0
         // => 0.0-1.0
-        self->horizontal->source(self->horizontal, 2.0 * x - 1.0);
+        self->horizontal->sink(self->horizontal, 2.0 * x - 1.0);
     }
     else
     {
         // 0.0-0.5
         // => 1.0-0.0
-        self->horizontal->sink(self->horizontal, 1.0 - 2.0 * x);
+        self->horizontal->source(self->horizontal, 1.0 - 2.0 * x);
     }
 
     if (y == NCM_SLIDEPAD_NEUTRAL)
@@ -36,11 +36,11 @@ void ncm_slidepad_hold(NcmSlidePad *self, double x, double y)
     }
     else if (NCM_SLIDEPAD_NEUTRAL < y)
     {
-        self->vertical->source(self->vertical, 2.0 * y - 1.0);
+        self->vertical->sink(self->vertical, 2.0 * y - 1.0);
     }
     else
     {
-        self->vertical->sink(self->vertical, 1.0 - 2.0 * y);
+        self->vertical->source(self->vertical, 1.0 - 2.0 * y);
     }
 }
 

@@ -1,12 +1,4 @@
-#include "ds4432.h"
-#include "ncm.h"
-
-typedef struct DS4432Adapter
-{
-    NcmCurrentDAConverterInterface parent;
-    DS4432 *dac;
-    DS4432MemoryAddress addr;
-} DS4432Adapter;
+#include "adapters.h"
 
 static void ds4432_adapter_sink(NcmCurrentDAConverterInterface *parent, double val)
 {

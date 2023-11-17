@@ -1,12 +1,4 @@
-#include "ad840x.h"
-#include "ncm.h"
-
-typedef struct AD840XAdapter
-{
-    NcmDigitalPotentiometerInterface parent;
-    AD840X *pots;
-    AD840XAddress addr;
-} AD840XAdapter;
+#include "adapters.h"
 
 static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double pos)
 {
@@ -60,7 +52,7 @@ AD840XAdapter *ad840x_adapter_new(AD840X *pots, AD840XAddress addr)
 
     self->pots = pots;
     self->addr = addr;
-    
+
     return self;
 }
 

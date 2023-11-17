@@ -1,12 +1,4 @@
-#include <Arduino.h>
-
-#include "ncm.h"
-
-typedef struct GPIOAdapter
-{
-    NcmGeneralPurposeIOInterface parent;
-    pin_size_t pin;
-} GPIOAdapter;
+#include "adapters.h"
 
 static void gpio_adapter_set_low(NcmGeneralPurposeIOInterface *parent)
 {
