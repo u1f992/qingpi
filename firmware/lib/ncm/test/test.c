@@ -258,7 +258,7 @@ int test_touchscreen(void)
     TestSwitch *sw = test_switch_new();
     assert(sw != NULL);
 
-    NcmTouchScreen *ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)v, (NcmDigitalPotentiometerInterface *)h, (NcmSwitchInterface *)sw);
+    NcmTouchScreen *ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)v, (NcmDigitalPotentiometerInterface *)h, (NcmSPSTSwitchInterface *)sw);
     assert(ts != NULL);
     assert(v->state == TEST_DIGIPOT_SHUTDOWN && h->state == TEST_DIGIPOT_SHUTDOWN);
     assert(sw->state == TEST_SWITCH_OFF);

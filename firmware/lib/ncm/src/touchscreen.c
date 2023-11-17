@@ -33,7 +33,7 @@ void ncm_touchscreen_release(NcmTouchScreen *self)
     self->horizontal->shutdown(self->horizontal);
 }
 
-NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, NcmDigitalPotentiometerInterface *horizontal, NcmSwitchInterface *sw)
+NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, NcmDigitalPotentiometerInterface *horizontal, NcmSPSTSwitchInterface *sw)
 {
     if (vertical == NULL || horizontal == NULL || sw == NULL)
     {

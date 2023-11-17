@@ -287,7 +287,7 @@ void setup()
     pinMode(PIN_SW_IN, OUTPUT);
     sw = adg801_new(PIN_SW_IN);
     sw_adapter = adg801_adapter_new(sw);
-    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_h, (NcmSwitchInterface *)sw_adapter);
+    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_h, (NcmSPSTSwitchInterface *)sw_adapter);
 
     assert(
         btn_y != NULL &&

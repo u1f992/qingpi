@@ -10,17 +10,17 @@ typedef enum TestSwitchState
 
 typedef struct TestSwitch
 {
-    NcmSwitchInterface parent;
+    NcmSPSTSwitchInterface parent;
     TestSwitchState state;
 } TestSwitch;
 
-static void test_switch_on(NcmSwitchInterface *parent)
+static void test_switch_on(NcmSPSTSwitchInterface *parent)
 {
     TestSwitch *self = (TestSwitch *)parent;
     self->state = TEST_SWITCH_ON;
 }
 
-static void test_switch_off(NcmSwitchInterface *parent)
+static void test_switch_off(NcmSPSTSwitchInterface *parent)
 {
     TestSwitch *self = (TestSwitch *)parent;
     self->state = TEST_SWITCH_OFF;

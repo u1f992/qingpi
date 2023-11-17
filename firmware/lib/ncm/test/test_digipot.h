@@ -15,10 +15,10 @@ typedef struct TestDigiPot
     double position;
 } TestDigiPot;
 
-static void test_digipot_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double pos)
+static void test_digipot_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
 {
     TestDigiPot *self = (TestDigiPot *)parent;
-    self->position = pos;
+    self->position = position;
 }
 
 static void test_digipot_power_on(NcmDigitalPotentiometerInterface *parent)

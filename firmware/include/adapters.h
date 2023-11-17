@@ -44,7 +44,7 @@ void ad840x_triple_adapter_delete(AD840XTripleAdapter *self);
 
 typedef struct ADG801Adapter
 {
-    NcmSwitchInterface parent;
+    NcmSPSTSwitchInterface parent;
     ADG801 *sw;
 } ADG801Adapter;
 

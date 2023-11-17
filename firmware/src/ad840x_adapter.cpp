@@ -1,6 +1,6 @@
 #include "adapters.h"
 
-static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double pos)
+static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
 {
     AD840XAdapter *self = (AD840XAdapter *)parent;
     if (self == NULL)
@@ -8,7 +8,7 @@ static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *
         return;
     }
 
-    ad840x_set(self->pots, self->addr, (uint8_t)(255 * pos));
+    ad840x_set(self->pots, self->addr, (uint8_t)(255 * position));
 }
 
 static void ad840x_adapter_power_on(NcmDigitalPotentiometerInterface *parent)

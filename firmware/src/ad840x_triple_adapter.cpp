@@ -21,7 +21,7 @@ static inline void ad840x_triple_set(AD840X *pots, AD840XAddress addr1, AD840XAd
     }
 }
 
-static void ad840x_triple_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double pos)
+static void ad840x_triple_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
 {
     AD840XTripleAdapter *self = (AD840XTripleAdapter *)parent;
     if (self == NULL)
@@ -29,7 +29,7 @@ static void ad840x_triple_adapter_set_wiper_position(NcmDigitalPotentiometerInte
         return;
     }
 
-    ad840x_triple_set(self->pots, self->addr1, self->addr2, self->addr3, (uint16_t)(510 * pos));
+    ad840x_triple_set(self->pots, self->addr1, self->addr2, self->addr3, (uint16_t)(510 * position));
 }
 
 static void ad840x_triple_adapter_power_on(NcmDigitalPotentiometerInterface *parent)

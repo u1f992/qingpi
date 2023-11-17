@@ -15,18 +15,18 @@ typedef struct TestDAC
     double value;
 } TestDAC;
 
-static void test_dac_sink(NcmCurrentDAConverterInterface *parent, double val)
+static void test_dac_sink(NcmCurrentDAConverterInterface *parent, double value)
 {
     TestDAC *self = (TestDAC *)parent;
     self->state = TEST_DAC_SINK;
-    self->value = val;
+    self->value = value;
 }
 
-static void test_dac_source(NcmCurrentDAConverterInterface *parent, double val)
+static void test_dac_source(NcmCurrentDAConverterInterface *parent, double value)
 {
     TestDAC *self = (TestDAC *)parent;
     self->state = TEST_DAC_SOURCE;
-    self->value = val;
+    self->value = value;
 }
 
 TestDAC *test_dac_new(void)

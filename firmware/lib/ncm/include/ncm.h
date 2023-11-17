@@ -17,8 +17,8 @@ typedef struct NcmGeneralPurposeIOInterface
  */
 typedef struct NcmCurrentDAConverterInterface
 {
-    void (*sink)(struct NcmCurrentDAConverterInterface *self, double val);
-    void (*source)(struct NcmCurrentDAConverterInterface *self, double val);
+    void (*sink)(struct NcmCurrentDAConverterInterface *self, double value);
+    void (*source)(struct NcmCurrentDAConverterInterface *self, double value);
 } NcmCurrentDAConverterInterface;
 
 /**
@@ -26,7 +26,7 @@ typedef struct NcmCurrentDAConverterInterface
  */
 typedef struct NcmDigitalPotentiometerInterface
 {
-    void (*set_wiper_position)(struct NcmDigitalPotentiometerInterface *self, double pos);
+    void (*set_wiper_position)(struct NcmDigitalPotentiometerInterface *self, double position);
     void (*power_on)(struct NcmDigitalPotentiometerInterface *self);
     void (*shutdown)(struct NcmDigitalPotentiometerInterface *self);
 } NcmDigitalPotentiometerInterface;
@@ -34,11 +34,11 @@ typedef struct NcmDigitalPotentiometerInterface
 /**
  * @brief Use CMOS analog switches with low on-resistance.
  */
-typedef struct NcmSwitchInterface
+typedef struct NcmSPSTSwitchInterface
 {
-    void (*on)(struct NcmSwitchInterface *self);
-    void (*off)(struct NcmSwitchInterface *self);
-} NcmSwitchInterface;
+    void (*on)(struct NcmSPSTSwitchInterface *self);
+    void (*off)(struct NcmSPSTSwitchInterface *self);
+} NcmSPSTSwitchInterface;
 
 typedef struct NcmButton
 {
@@ -93,12 +93,12 @@ typedef struct NcmTouchScreen
 {
     NcmDigitalPotentiometerInterface *vertical;
     NcmDigitalPotentiometerInterface *horizontal;
-    NcmSwitchInterface *sw;
+    NcmSPSTSwitchInterface *sw;
 } NcmTouchScreen;
 
 void ncm_touchscreen_hold(NcmTouchScreen *self, double x, double y);
 void ncm_touchscreen_release(NcmTouchScreen *self);
-NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, NcmDigitalPotentiometerInterface *horizontal, NcmSwitchInterface *sw);
+NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, NcmDigitalPotentiometerInterface *horizontal, NcmSPSTSwitchInterface *sw);
 void ncm_touchscreen_delete(NcmTouchScreen *self);
 
 #ifdef __cplusplus

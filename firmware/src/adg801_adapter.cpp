@@ -1,6 +1,6 @@
 #include "adapters.h"
 
-static void adg801_adapter_on(NcmSwitchInterface *parent)
+static void adg801_adapter_on(NcmSPSTSwitchInterface *parent)
 {
     ADG801Adapter *self = (ADG801Adapter *)parent;
     if (self == NULL)
@@ -11,7 +11,7 @@ static void adg801_adapter_on(NcmSwitchInterface *parent)
     adg801_on(self->sw);
 }
 
-static void adg801_adapter_off(NcmSwitchInterface *parent)
+static void adg801_adapter_off(NcmSPSTSwitchInterface *parent)
 {
     ADG801Adapter *self = (ADG801Adapter *)parent;
     if (self == NULL)

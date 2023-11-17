@@ -1,6 +1,6 @@
 #include "adapters.h"
 
-static void ds4432_adapter_sink(NcmCurrentDAConverterInterface *parent, double val)
+static void ds4432_adapter_sink(NcmCurrentDAConverterInterface *parent, double value)
 {
     DS4432Adapter *self = (DS4432Adapter *)parent;
     if (self == NULL)
@@ -8,10 +8,10 @@ static void ds4432_adapter_sink(NcmCurrentDAConverterInterface *parent, double v
         return;
     }
 
-    ds4432_set(self->dac, self->addr, DS4432_SINK, (uint8_t)(0b01111111 * val));
+    ds4432_set(self->dac, self->addr, DS4432_SINK, (uint8_t)(0b01111111 * value));
 }
 
-static void ds4432_adapter_source(NcmCurrentDAConverterInterface *parent, double val)
+static void ds4432_adapter_source(NcmCurrentDAConverterInterface *parent, double value)
 {
     DS4432Adapter *self = (DS4432Adapter *)parent;
     if (self == NULL)
@@ -19,7 +19,7 @@ static void ds4432_adapter_source(NcmCurrentDAConverterInterface *parent, double
         return;
     }
 
-    ds4432_set(self->dac, self->addr, DS4432_SOURCE, (uint8_t)(0b01111111 * val));
+    ds4432_set(self->dac, self->addr, DS4432_SOURCE, (uint8_t)(0b01111111 * value));
 }
 
 DS4432Adapter *ds4432_adapter_new(DS4432 *dac, DS4432MemoryAddress addr)
