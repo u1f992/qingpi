@@ -7,7 +7,7 @@
 <dt>Gold Fingers</dt><dd>Yes</dd>
 <dt>Gold Fingers Thickness</dt><dd>0.3</dd>
 <dt>Stiffener</dt><dd>Polyimide</dd>
-<dt>Polyimide Thickness</dt><dd>Polyimide</dd>
+<dt>Polyimide Thickness</dt><dd>0.225mm</dd>
 <dt>Confirm Production file</dt><dd>Yes</dd>
 <dt>PCB Remark</dt><dd>
 
@@ -21,4 +21,6 @@ Required total thickness : 0.3mm
 </dd>
 </dl>
 
-`Polyimide Thickness` can be calculated with the [PI Calculator](https://jlcpcb.com/gold-fingers-PI-thickness?stencilLayer=2&stencilPly=0.11&fpcColor=Yellow&goldfingerThickness=0.3&_ga=2.253331850.2029250474.1698935648-2034180893.1683108705).
+`Polyimide Thickness` can be calculated with the [PI Calculator](https://jlcpcb.com/gold-fingers-PI-thickness?stencilLayer=2&stencilPly=0.11&fpcColor=Yellow&goldfingerThickness=0.3&_ga=2.253331850.2029250474.1698935648-2034180893.1683108705). It says "PI stiffener theoretical thickness： 0.2295 mm, Recommended PI stiffener thickness： 0.25 mm".
+
+From the manufacturer's perspective, recommending 0.25mm as the next thicker step makes sense, since a total thickness under 0.3mm would not meet the requirement. However, after testing it through a trial fitting, it still appears too thick. Understanding the risk of it being less than 0.3mm, I deliberately chose a thinner option, 0.225mm.
