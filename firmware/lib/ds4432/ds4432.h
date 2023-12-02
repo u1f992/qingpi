@@ -23,24 +23,8 @@ typedef enum DS4432MemoryAddress
     DS4432_OUT1 = 0xF9U
 } DS4432MemoryAddress;
 
-inline void ds4432_set(DS4432 *dac, DS4432MemoryAddress addr, DS4432SignBit sign, uint8_t data)
-{
-    if (0b111'1111 < data)
-    {
-        return;
-    }
-
-    uint8_t d = ((uint8_t)sign << 7) | data;
-
-    dac->wire->beginTransmission(DS4432_ADDRESS);
-    dac->wire->write((uint8_t)addr);
-    dac->wire->write(d);
-    dac->wire->endTransmission();
-}
-
-inline void ds4432_new(DS4432 *dac, HardwareI2C *wire)
-{
-    dac->wire = wire;
-}
+void ds4432_set(DS4432 *self, DS4432MemoryAddress addr, DS4432SignBit sign, uint8_t data);
+DS4432 *ds4432_new(HardwareI2C *wire);
+void ds4432_delete(DS4432 *self);
 
 #endif

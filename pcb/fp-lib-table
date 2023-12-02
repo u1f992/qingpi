@@ -8,4 +8,5 @@
   (lib (name "AD8403ARUZ1-REEL")(type "KiCad")(uri "${KIPRJMOD}/lib/AD8403ARUZ1-REEL/AD8403ARUZ1-REEL.pretty")(options "")(descr ""))
   (lib (name "THD0515-24CL-SN")(type "KiCad")(uri "${KIPRJMOD}/lib/THD0515-24CL-SN/THD0515-24CL-SN.pretty")(options "")(descr ""))
   (lib (name "ADG801BRTZ-REEL7")(type "KiCad")(uri "${KIPRJMOD}/lib/ADG801BRTZ-REEL7/ADG801BRTZ-REEL7.pretty")(options "")(descr ""))
+  (lib (name "MouseBites")(type "KiCad")(uri "${KIPRJMOD}/MouseBites.pretty")(options "")(descr ""))
 )
