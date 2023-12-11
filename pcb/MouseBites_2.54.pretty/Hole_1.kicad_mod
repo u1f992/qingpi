@@ -13,6 +13,5 @@
       (effects (font (size 1 1) (thickness 0.15)))
     (tstamp 0f1172c8-55ca-46d8-a410-c252284b4b7c)
   )
-  (pad "1" thru_hole circle (at 0 0) (size 1 1) (drill 1) (layers "*.Cu" "*.Mask" "F.Paste")
-    (solder_mask_margin 1) (tstamp ef89d0ba-75a4-42dd-9178-0bf782a5b5ed))
+  (pad "" np_thru_hole circle (at 0 0) (size 1 1) (drill 1) (layers "F&B.Cu" "F.Paste" "F.Mask") (tstamp ef89d0ba-75a4-42dd-9178-0bf782a5b5ed))
 )
