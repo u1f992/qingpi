@@ -14,8 +14,8 @@
 #ifdef NEOCTRLMOD_XL
 static const pin_size_t PIN_SELECT = 2;
 static const pin_size_t PIN_HOME = 3;
-static const pin_size_t PIN_START = 4;
-static const pin_size_t PIN_POWER = 5;
+static const pin_size_t PIN_POWER = 4;
+static const pin_size_t PIN_START = 5;
 static const pin_size_t PIN_LEFT = 6;
 static const pin_size_t PIN_DOWN = 7;
 static const pin_size_t PIN_UP = 8;
@@ -357,4 +357,7 @@ void loop()
     }
 
     reflect_state(state);
+
+    nxamf_gamepad_state_delete(state);
+    state = NULL;
 }
