@@ -114,7 +114,6 @@ static int64_t led_off(alarm_id_t id, void *user_data)
 
 static void async_led_on_for_100ms()
 {
-    sml_lx0404siupgusb_set(led, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_ON, SML_LX0404SIUPGUSB_OFF);
     sml_lx0404siupgusb_on(led);
     alarm_id_t alarm_id = add_alarm_in_ms(100, led_off, NULL, false);
 }
@@ -126,88 +125,161 @@ static void reflect_state(NxamfGamepadState *state)
         return;
     }
 
-    async_led_on_for_100ms();
+    uint16_t r = SML_LX0404SIUPGUSB_OFF;
+    uint16_t g = SML_LX0404SIUPGUSB_OFF;
+    uint16_t b = SML_LX0404SIUPGUSB_OFF;
 
     if (state->y == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_y);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_y);
+    }
 
     if (state->b == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_b);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_b);
+    }
 
     if (state->a == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_a);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_a);
+    }
 
     if (state->x == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_x);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_x);
+    }
 
     if (state->l == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_l);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_l);
+    }
 
     if (state->r == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_r);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_r);
+    }
 
     if (state->minus == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_select);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_select);
+    }
 
     if (state->plus == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_start);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_start);
+    }
 
     if (state->home == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_home);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_home);
+    }
 
     if (state->l_click == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_power);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_power);
+    }
 
     if (state->r_click == NXAMF_BUTTON_STATE_PRESSED)
+    {
         ncm_button_hold(btn_wireless);
+        r = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_button_release(btn_wireless);
+    }
 
     switch (state->hat)
     {
     case NXAMF_HAT_STATE_UP:
         ncm_hat_hold(hat, NCM_HAT_UP);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_UPRIGHT:
         ncm_hat_hold(hat, NCM_HAT_UPRIGHT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_RIGHT:
         ncm_hat_hold(hat, NCM_HAT_RIGHT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWNRIGHT:
         ncm_hat_hold(hat, NCM_HAT_DOWNRIGHT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWN:
         ncm_hat_hold(hat, NCM_HAT_DOWN);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWNLEFT:
         ncm_hat_hold(hat, NCM_HAT_DOWNLEFT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_LEFT:
         ncm_hat_hold(hat, NCM_HAT_LEFT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_UPLEFT:
         ncm_hat_hold(hat, NCM_HAT_UPLEFT);
+        r = SML_LX0404SIUPGUSB_ON;
+        g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_NEUTRAL:
     default:
@@ -216,16 +288,29 @@ static void reflect_state(NxamfGamepadState *state)
     }
 
     if (state->l_stick.x != NXAMF_STICK_STATE_NEUTRAL || state->l_stick.y != NXAMF_STICK_STATE_NEUTRAL)
+    {
         ncm_slidepad_hold(sp, (double)state->l_stick.x / 255, (double)state->l_stick.y / 255);
+        g = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_slidepad_release(sp);
+    }
 
     uint16_t ts_x = state->extension[0] | state->extension[1] << 8;
     uint8_t ts_y = state->extension[2];
     if (0 < ts_x && ts_x <= 320 && 0 < ts_y && ts_y <= 240)
+    {
         ncm_touchscreen_hold(ts, (double)ts_x / 320, (double)ts_y / 240);
+        b = SML_LX0404SIUPGUSB_ON;
+    }
     else
+    {
         ncm_touchscreen_release(ts);
+    }
+
+    sml_lx0404siupgusb_set(led, r, g, b);
+    async_led_on_for_100ms();
 }
 
 void setup()
@@ -284,8 +369,8 @@ void setup()
     Wire1.setSCL(PIN_I2C_SCL);
     Wire1.begin();
     dac = ds4432_new(&Wire1);
-    dac_v = ds4432_adapter_new(dac, DS4432_OUT1);
-    dac_h = ds4432_adapter_new(dac, DS4432_OUT0);
+    dac_v = ds4432_adapter_new(dac, DS4432_OUT0);
+    dac_h = ds4432_adapter_new(dac, DS4432_OUT1);
     sp = ncm_slidepad_new((NcmCurrentDAConverterInterface *)dac_v, (NcmCurrentDAConverterInterface *)dac_h);
 
     SPI.setSCK(PIN_SPI_SCK);
@@ -324,7 +409,7 @@ void setup()
     pokecon = pokecon_protocol_new();
     protocols[0] = (NxamfBytesProtocolInterface *)nxmc2;
     protocols[1] = (NxamfBytesProtocolInterface *)pokecon;
-    mux = nxamf_protocol_multiplexer_new(protocols, 3);
+    mux = nxamf_protocol_multiplexer_new(protocols, 2);
     buffer = nxamf_bytes_buffer_new((NxamfBytesProtocolInterface *)mux);
     assert(
         nxmc2 != NULL &&
@@ -370,6 +455,9 @@ void setup()
         sml_lx0404siupgusb_set(led, rgb->red, rgb->green, rgb->blue);
         sml_lx0404siupgusb_on(led);
         delay(1);
+
+        ctp_rgb_16_delete(rgb);
+        rgb = NULL;
     }
     sml_lx0404siupgusb_off(led);
 }
