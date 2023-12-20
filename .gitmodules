@@ -1,3 +1,6 @@
 [submodule "firmware/lib/nx_automation_meta_firmware"]
 	path = firmware/lib/nx_automation_meta_firmware
 	url = https://github.com/U-1F992/nx_automation_meta_firmware.git
+[submodule "firmware/lib/ctinypalette"]
+	path = firmware/lib/ctinypalette
+	url = https://github.com/U-1F992/ctinypalette

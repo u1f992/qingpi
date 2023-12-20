@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(sml_lx0404siupgusb)
+set(CMAKE_C_STANDARD 99)
+
+include_directories(include)
+add_library(sml_lx0404siupgusb STATIC
+            src/sml_lx0404siupgusb.c
+            src/null_digital_output.c)
+
+add_executable(test test/test.c)
+target_link_libraries(test sml_lx0404siupgusb)
