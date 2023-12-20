@@ -10,6 +10,10 @@
 #include "nxamf/nxmc2.h"
 #include "nxamf/pokecon.h"
 
+#include "ctinypalette.h"
+#include "sml_lx0404siupgusb.h"
+#include "sml_lx0404siupgusb_arduino_adapter.h"
+
 #define NEOCTRLMOD_XL
 #ifdef NEOCTRLMOD_XL
 static const pin_size_t PIN_SELECT = 2;
@@ -33,9 +37,12 @@ static const pin_size_t PIN_SPI_TX = 19;
 static const pin_size_t PIN_SPI_CS = 20;
 static const pin_size_t PIN_POTS_SHDN = 21;
 static const pin_size_t PIN_SW_IN = 22;
-static const pin_size_t PIN_LED_BUILTIN = 25;
+static const pin_size_t PIN_LED_ANODE = 23;
+static const pin_size_t PIN_LED_RED = 24;
+static const pin_size_t PIN_LED_GREEN = 25;
 static const pin_size_t PIN_I2C_SDA = 26;
 static const pin_size_t PIN_I2C_SCL = 27;
+static const pin_size_t PIN_LED_BLUE = 28;
 #endif
 
 static GPIOAdapter *gpio_y = NULL;
@@ -83,6 +90,13 @@ static ADG801 *sw = NULL;
 static ADG801Adapter *sw_adapter = NULL;
 static NcmTouchScreen *ts = NULL;
 
+static const int ANALOG_WRITE_RESOLUTION = 16;
+static SML_LX0404SIUPGUSBArduinoDigitalAdapter *anode;
+static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_red;
+static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_green;
+static SML_LX0404SIUPGUSBArduinoAnalogAdapter *pwm_blue;
+static SML_LX0404SIUPGUSB *led;
+
 static const int SERIAL_INACTIVE_TIMEOUT = 100;
 static int inactive_count = 0;
 
@@ -94,13 +108,14 @@ static NxamfBytesBuffer *buffer;
 
 static int64_t led_off(alarm_id_t id, void *user_data)
 {
-    digitalWrite(PIN_LED_BUILTIN, LOW);
+    sml_lx0404siupgusb_off(led);
     return false;
 }
 
 static void async_led_on_for_100ms()
 {
-    digitalWriteFast(PIN_LED_BUILTIN, HIGH);
+    sml_lx0404siupgusb_set(led, SML_LX0404SIUPGUSB_OFF, SML_LX0404SIUPGUSB_ON, SML_LX0404SIUPGUSB_OFF);
+    sml_lx0404siupgusb_on(led);
     alarm_id_t alarm_id = add_alarm_in_ms(100, led_off, NULL, false);
 }
 
@@ -317,22 +332,46 @@ void setup()
         mux != NULL &&
         buffer != NULL);
 
-    pinMode(PIN_LED_BUILTIN, OUTPUT);
-    digitalWrite(PIN_LED_BUILTIN, LOW);
+    analogWriteResolution(ANALOG_WRITE_RESOLUTION);
+    pinMode(PIN_LED_ANODE, OUTPUT_8MA);
+    digitalWrite(PIN_LED_ANODE, LOW);
+    anode = sml_lx0404siupgusb_arduino_digital_adapter_new(PIN_LED_ANODE);
+    pinMode(PIN_LED_RED, OUTPUT);
+    digitalWrite(PIN_LED_RED, HIGH);
+    pwm_red = sml_lx0404siupgusb_arduino_analog_adapter_new(PIN_LED_RED, ANALOG_WRITE_RESOLUTION);
+    pinMode(PIN_LED_GREEN, OUTPUT);
+    digitalWrite(PIN_LED_GREEN, HIGH);
+    pwm_green = sml_lx0404siupgusb_arduino_analog_adapter_new(PIN_LED_GREEN, ANALOG_WRITE_RESOLUTION);
+    pinMode(PIN_LED_BLUE, OUTPUT);
+    digitalWrite(PIN_LED_BLUE, HIGH);
+    pwm_blue = sml_lx0404siupgusb_arduino_analog_adapter_new(PIN_LED_BLUE, ANALOG_WRITE_RESOLUTION);
+    led = sml_lx0404siupgusb_new((SML_LX0404SIUPGUSBDigitalOutputInterface *)anode,
+                                 (SML_LX0404SIUPGUSBAnalogOutputInterface *)pwm_red,
+                                 (SML_LX0404SIUPGUSBAnalogOutputInterface *)pwm_green,
+                                 (SML_LX0404SIUPGUSBAnalogOutputInterface *)pwm_blue);
+    assert(
+        anode != NULL &&
+        pwm_red != NULL &&
+        pwm_green != NULL &&
+        pwm_blue != NULL &&
+        led != NULL);
 
-    // Blink if the setup routine is successful.
-    digitalWrite(PIN_LED_BUILTIN, HIGH);
-    delay(200);
-    digitalWrite(PIN_LED_BUILTIN, LOW);
-    delay(200);
-    digitalWrite(PIN_LED_BUILTIN, HIGH);
-    delay(200);
-    digitalWrite(PIN_LED_BUILTIN, LOW);
-    delay(200);
-    digitalWrite(PIN_LED_BUILTIN, HIGH);
-    delay(200);
-    digitalWrite(PIN_LED_BUILTIN, LOW);
-    delay(200);
+    // Lights up in rainbow colors if the setup routine is successful.
+    for (int hue = 0; hue < 2000; hue++)
+    {
+        CtpHSV16 *hsv = ctp_hsv_16_new(((double)hue / 2000) * UINT16_MAX, UINT16_MAX, UINT16_MAX);
+        assert(hsv != NULL);
+
+        CtpRGB16 *rgb = ctp_hsv_16_to_rgb_16(hsv);
+        assert(rgb != NULL);
+        ctp_hsv_16_delete(hsv);
+        hsv = NULL;
+
+        sml_lx0404siupgusb_set(led, rgb->red, rgb->green, rgb->blue);
+        sml_lx0404siupgusb_on(led);
+        delay(1);
+    }
+    sml_lx0404siupgusb_off(led);
 }
 
 void loop()
