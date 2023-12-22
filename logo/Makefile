@@ -12,39 +12,52 @@ endif
 
 POTRACE = potrace
 
-.PHONY: all clean
+# Intermediate and output files
+ICON_PNG = temp_icon.png
+STRING_PNG = temp_string.png
+SPACER_PNG = temp_spacer.png
+LOGO_PNG = temp_logo.png
+LOGO_PNM = temp_logo.pnm
+LOGO_SVG = logo.svg
+LOGO_WHITE_SVG = logo-white.svg
 
-all: icon.svg logo.svg logo-white.svg
+# Input files
+ICON_SVG = icon.svg
+STRING_SVG = string.svg
 
-icon-bg-white.png: icon.png
-	$(CONVERT) $< -background white -alpha remove -colorspace Gray $@
+$(ICON_PNG): $(ICON_SVG)
+	$(CONVERT) $< -resize 1000x1000 $@
 
-icon.pnm: icon-bg-white.png
+$(STRING_PNG): $(STRING_SVG)
+	$(CONVERT) $< -resize 3000x3000 $@
+
+# Create a spacer PNG
+$(SPACER_PNG):
+	$(CONVERT) -size 200x1 xc:white $@
+
+# Combine the PNGs into a single image
+$(LOGO_PNG): $(ICON_PNG) $(SPACER_PNG) $(STRING_PNG)
+	$(CONVERT) $^ -gravity center -background white +append $@
+
+$(LOGO_PNM): $(LOGO_PNG)
 	$(CONVERT) $< $@
 
-icon.svg: icon.pnm
+$(LOGO_SVG): $(LOGO_PNM)
 	$(POTRACE) $< -s -o $@
 
-string.png:
-	$(CONVERT) -background transparent -fill black -font Pretendo -pointsize 500 label:"NeoCtrlMod" $@
-
-spacer.png:
-	$(CONVERT) -size 200x1 xc:transparent $@
-
-logo.png: icon.png spacer.png string.png
-	$(CONVERT) $^ -colorspace Gray -gravity center -background none +append $@
-
-logo-bg-white.png: logo.png
-	$(CONVERT) $< -background white -alpha remove $@
-
-logo.pnm: logo-bg-white.png
-	$(CONVERT) $< $@
-
-logo.svg: logo.pnm
-	$(POTRACE) $< -s -o $@
-
-logo-white.svg: logo.svg
+$(LOGO_WHITE_SVG): $(LOGO_SVG)
 	$(PYTHON) -c "import sys, re; sys.stdout.write(re.sub(r'(?i)#000000', '#ffffff', open('$(call FIXPATH,$<)').read()))" > $@
 
+all: $(LOGO_SVG) $(LOGO_WHITE_SVG)
+
 clean:
-	$(RM) $(call FIXPATH,icon-bg-white.png icon.pnm icon.svg string.png spacer.png logo.png logo-bg-white.png logo.pnm logo.svg logo-white.svg)
+	$(RM) \
+	    $(call FIXPATH,$(ICON_PNG)) \
+	    $(call FIXPATH,$(STRING_PNG)) \
+	    $(call FIXPATH,$(SPACER_PNG)) \
+	    $(call FIXPATH,$(LOGO_PNG)) \
+	    $(call FIXPATH,$(LOGO_PNM)) \
+	    $(call FIXPATH,$(LOGO_SVG)) \
+	    $(call FIXPATH,$(LOGO_WHITE_SVG))
+
+.PHONY: all clean
