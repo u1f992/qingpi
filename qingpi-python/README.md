@@ -1,6 +1,6 @@
-# ncm
+# qingpi-python
 
-Python library for NeoCtrlMod.
+Python library for Qingpi.
 
 ```
 poetry run python -m pip install -e .

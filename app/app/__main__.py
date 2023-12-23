@@ -3,8 +3,8 @@ import tkinter as tk
 
 import serial
 
-import ncm
-from ncm import *  # type: ignore
+import qingpi
+from qingpi import *  # type: ignore
 
 from app.ui import *
 from app.button import *
@@ -109,7 +109,7 @@ def on_touchscreen_release(_, release):
 def main(args: argparse.Namespace) -> None:
     ser = serial.Serial(args.port)
     if not args.debug:
-        hold, release = ncm.init(ser)
+        hold, release = qingpi.init(ser)
     else:
 
         class DebugWriter:
@@ -120,12 +120,12 @@ def main(args: argparse.Namespace) -> None:
                 print(list(data))
                 return self.__ser.write(data)
 
-        hold, release = ncm.init(DebugWriter(ser))
+        hold, release = qingpi.init(DebugWriter(ser))
 
     root = tk.Tk()
     # kind of a bit buggy.
     # root.iconbitmap("icon.ico")
-    root.title("NeoCtrlMod")
+    root.title("Qingpi")
 
     touchscreen_size = TouchScreenSize(width=320, height=240)
 
@@ -155,7 +155,7 @@ def main(args: argparse.Namespace) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="__main__.py",
-        description="GUI application to control NeoCtrlMod with transparent Window and Citra compatible keyboard operation.",
+        description="GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.",
     )
     parser.add_argument(
         "port",

@@ -1,12 +1,15 @@
 [tool.poetry]
-name = "ncm"
-version = "1.0.0"
-description = "Python library for NeoCtrlMod."
+name = "qingpi-python"
+version = "0.1.0"
+description = ""
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 readme = "README.md"
+packages = [
+    { include = "qingpi", from = "." }
+]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.13"
 
 
 [build-system]

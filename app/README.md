@@ -1,11 +1,11 @@
-# NeoCtrlMod Application
+# Qingpi Application
 
-GUI application to control NeoCtrlMod with transparent Window and Citra compatible keyboard operation.
+GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.
 
 Currently, only Windows version is available.
 
 ```
-.\NeoCtrlMod.exe [port]
+.\qingpi-app.exe [port]
 ```
 
 ## Input mapping

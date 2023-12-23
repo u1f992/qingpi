@@ -1,8 +1,8 @@
 import enum
 import typing
 
-import ncm
-from ncm import *
+import qingpi
+from qingpi import *
 
 
 class ButtonFlag(enum.IntFlag):
@@ -55,7 +55,7 @@ class MockWriter:
 
 def main():
     mock = MockWriter()
-    hold, release = ncm.init(mock)
+    hold, release = qingpi.init(mock)
 
     # Hold one button.
     hold(Y)
@@ -157,3 +157,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("OK")
