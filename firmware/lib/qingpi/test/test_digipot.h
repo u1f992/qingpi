@@ -1,4 +1,4 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
@@ -10,24 +10,24 @@ typedef enum TestDigiPotState
 
 typedef struct TestDigiPot
 {
-    NcmDigitalPotentiometerInterface parent;
+    QpiDigitalPotentiometerInterface parent;
     TestDigiPotState state;
-    double position;
+    uint16_t position;
 } TestDigiPot;
 
-static void test_digipot_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
+static void test_digipot_set_wiper_position(QpiDigitalPotentiometerInterface *parent, uint16_t position)
 {
     TestDigiPot *self = (TestDigiPot *)parent;
     self->position = position;
 }
 
-static void test_digipot_power_on(NcmDigitalPotentiometerInterface *parent)
+static void test_digipot_power_on(QpiDigitalPotentiometerInterface *parent)
 {
     TestDigiPot *self = (TestDigiPot *)parent;
     self->state = TEST_DIGIPOT_POWER_ON;
 }
 
-static void test_digipot_shutdown(NcmDigitalPotentiometerInterface *parent)
+static void test_digipot_shutdown(QpiDigitalPotentiometerInterface *parent)
 {
     TestDigiPot *self = (TestDigiPot *)parent;
     self->state = TEST_DIGIPOT_SHUTDOWN;
@@ -46,7 +46,7 @@ TestDigiPot *test_digipot_new(void)
     self->parent.shutdown = test_digipot_shutdown;
 
     self->state = TEST_DIGIPOT_POWER_ON;
-    self->position = 0.0;
+    self->position = 0;
 
     return self;
 }

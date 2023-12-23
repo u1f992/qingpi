@@ -2,9 +2,8 @@
 #include <SPI.h>
 #include <Wire.h>
 
-#include "adapters.h"
-
-#include "ncm.h"
+#include "qingpi.h"
+#include "qingpi_adapters.h"
 
 #include "nxamf.h"
 #include "nxamf/nxmc2.h"
@@ -14,8 +13,8 @@
 #include "sml_lx0404siupgusb.h"
 #include "sml_lx0404siupgusb_arduino_adapter.h"
 
-#define NEOCTRLMOD_XL
-#ifdef NEOCTRLMOD_XL
+#define QINGPI_XL
+#ifdef QINGPI_XL
 static const pin_size_t PIN_SELECT = 2;
 static const pin_size_t PIN_HOME = 3;
 static const pin_size_t PIN_POWER = 4;
@@ -43,52 +42,55 @@ static const pin_size_t PIN_LED_GREEN = 25;
 static const pin_size_t PIN_I2C_SDA = 26;
 static const pin_size_t PIN_I2C_SCL = 27;
 static const pin_size_t PIN_LED_BLUE = 28;
+
+static const uint16_t TOUCHSCREEN_X_MAX = 320;
+static const uint8_t TOUCHSCREEN_Y_MAX = 240;
 #endif
 
 static GPIOAdapter *gpio_y = NULL;
-static NcmButton *btn_y = NULL;
+static QpiButton *btn_y = NULL;
 static GPIOAdapter *gpio_b = NULL;
-static NcmButton *btn_b = NULL;
+static QpiButton *btn_b = NULL;
 static GPIOAdapter *gpio_a = NULL;
-static NcmButton *btn_a = NULL;
+static QpiButton *btn_a = NULL;
 static GPIOAdapter *gpio_x = NULL;
-static NcmButton *btn_x = NULL;
+static QpiButton *btn_x = NULL;
 static GPIOAdapter *gpio_l = NULL;
-static NcmButton *btn_l = NULL;
+static QpiButton *btn_l = NULL;
 static GPIOAdapter *gpio_r = NULL;
-static NcmButton *btn_r = NULL;
+static QpiButton *btn_r = NULL;
 static GPIOAdapter *gpio_select = NULL;
-static NcmButton *btn_select = NULL;
+static QpiButton *btn_select = NULL;
 static GPIOAdapter *gpio_start = NULL;
-static NcmButton *btn_start = NULL;
+static QpiButton *btn_start = NULL;
 static GPIOAdapter *gpio_home = NULL;
-static NcmButton *btn_home = NULL;
+static QpiButton *btn_home = NULL;
 static GPIOAdapter *gpio_power = NULL;
-static NcmButton *btn_power = NULL;
+static QpiButton *btn_power = NULL;
 static GPIOAdapter *gpio_wireless = NULL;
-static NcmButton *btn_wireless = NULL;
+static QpiButton *btn_wireless = NULL;
 
 static GPIOAdapter *gpio_up = NULL;
-static NcmButton *hat_up = NULL;
+static QpiButton *hat_up = NULL;
 static GPIOAdapter *gpio_right = NULL;
-static NcmButton *hat_right = NULL;
+static QpiButton *hat_right = NULL;
 static GPIOAdapter *gpio_down = NULL;
-static NcmButton *hat_down = NULL;
+static QpiButton *hat_down = NULL;
 static GPIOAdapter *gpio_left = NULL;
-static NcmButton *hat_left = NULL;
-static NcmHat *hat = NULL;
+static QpiButton *hat_left = NULL;
+static QpiHat *hat = NULL;
 
 static DS4432 *dac = NULL;
 static DS4432Adapter *dac_v = NULL;
 static DS4432Adapter *dac_h = NULL;
-static NcmSlidePad *sp = NULL;
+static QpiSlidePad *sp = NULL;
 
 static AD840X *pots = NULL;
 static AD840XAdapter *pots_v = NULL;
 static AD840XTripleAdapter *pots_h = NULL;
 static ADG801 *sw = NULL;
 static ADG801Adapter *sw_adapter = NULL;
-static NcmTouchScreen *ts = NULL;
+static QpiTouchScreen *ts = NULL;
 
 static const int ANALOG_WRITE_RESOLUTION = 16;
 static SML_LX0404SIUPGUSBArduinoDigitalAdapter *anode;
@@ -131,182 +133,182 @@ static void reflect_state(NxamfGamepadState *state)
 
     if (state->y == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_y);
+        qpi_button_hold(btn_y);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_y);
+        qpi_button_release(btn_y);
     }
 
     if (state->b == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_b);
+        qpi_button_hold(btn_b);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_b);
+        qpi_button_release(btn_b);
     }
 
     if (state->a == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_a);
+        qpi_button_hold(btn_a);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_a);
+        qpi_button_release(btn_a);
     }
 
     if (state->x == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_x);
+        qpi_button_hold(btn_x);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_x);
+        qpi_button_release(btn_x);
     }
 
     if (state->l == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_l);
+        qpi_button_hold(btn_l);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_l);
+        qpi_button_release(btn_l);
     }
 
     if (state->r == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_r);
+        qpi_button_hold(btn_r);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_r);
+        qpi_button_release(btn_r);
     }
 
     if (state->minus == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_select);
+        qpi_button_hold(btn_select);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_select);
+        qpi_button_release(btn_select);
     }
 
     if (state->plus == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_start);
+        qpi_button_hold(btn_start);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_start);
+        qpi_button_release(btn_start);
     }
 
     if (state->home == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_home);
+        qpi_button_hold(btn_home);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_home);
+        qpi_button_release(btn_home);
     }
 
     if (state->l_click == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_power);
+        qpi_button_hold(btn_power);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_power);
+        qpi_button_release(btn_power);
     }
 
     if (state->r_click == NXAMF_BUTTON_STATE_PRESSED)
     {
-        ncm_button_hold(btn_wireless);
+        qpi_button_hold(btn_wireless);
         r = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_button_release(btn_wireless);
+        qpi_button_release(btn_wireless);
     }
 
     switch (state->hat)
     {
     case NXAMF_HAT_STATE_UP:
-        ncm_hat_hold(hat, NCM_HAT_UP);
+        qpi_hat_hold(hat, QPI_HAT_UP);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_UPRIGHT:
-        ncm_hat_hold(hat, NCM_HAT_UPRIGHT);
+        qpi_hat_hold(hat, QPI_HAT_UPRIGHT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_RIGHT:
-        ncm_hat_hold(hat, NCM_HAT_RIGHT);
+        qpi_hat_hold(hat, QPI_HAT_RIGHT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWNRIGHT:
-        ncm_hat_hold(hat, NCM_HAT_DOWNRIGHT);
+        qpi_hat_hold(hat, QPI_HAT_DOWNRIGHT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWN:
-        ncm_hat_hold(hat, NCM_HAT_DOWN);
+        qpi_hat_hold(hat, QPI_HAT_DOWN);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_DOWNLEFT:
-        ncm_hat_hold(hat, NCM_HAT_DOWNLEFT);
+        qpi_hat_hold(hat, QPI_HAT_DOWNLEFT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_LEFT:
-        ncm_hat_hold(hat, NCM_HAT_LEFT);
+        qpi_hat_hold(hat, QPI_HAT_LEFT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_UPLEFT:
-        ncm_hat_hold(hat, NCM_HAT_UPLEFT);
+        qpi_hat_hold(hat, QPI_HAT_UPLEFT);
         r = SML_LX0404SIUPGUSB_ON;
         g = SML_LX0404SIUPGUSB_ON;
         break;
     case NXAMF_HAT_STATE_NEUTRAL:
     default:
-        ncm_hat_release(hat);
+        qpi_hat_release(hat);
         break;
     }
 
     if (state->l_stick.x != NXAMF_STICK_STATE_NEUTRAL || state->l_stick.y != NXAMF_STICK_STATE_NEUTRAL)
     {
-        ncm_slidepad_hold(sp, (double)state->l_stick.x / 255, (double)state->l_stick.y / 255);
+        qpi_slidepad_hold(sp, (uint16_t)(((double)state->l_stick.x / UINT8_MAX) * UINT16_MAX), (uint16_t)(((double)state->l_stick.y / UINT8_MAX) * UINT16_MAX));
         g = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_slidepad_release(sp);
+        qpi_slidepad_release(sp);
     }
 
     uint16_t ts_x = state->extension[0] | state->extension[1] << 8;
     uint8_t ts_y = state->extension[2];
-    if (0 < ts_x && ts_x <= 320 && 0 < ts_y && ts_y <= 240)
+    if (0 < ts_x && ts_x <= TOUCHSCREEN_X_MAX && 0 < ts_y && ts_y <= TOUCHSCREEN_Y_MAX)
     {
-        ncm_touchscreen_hold(ts, (double)ts_x / 320, (double)ts_y / 240);
+        qpi_touchscreen_hold(ts, (uint16_t)(((double)ts_x / TOUCHSCREEN_X_MAX) * UINT16_MAX), (uint16_t)(((double)ts_y / TOUCHSCREEN_Y_MAX) * UINT16_MAX));
         b = SML_LX0404SIUPGUSB_ON;
     }
     else
     {
-        ncm_touchscreen_release(ts);
+        qpi_touchscreen_release(ts);
     }
 
     sml_lx0404siupgusb_set(led, r, g, b);
@@ -319,51 +321,51 @@ void setup()
 
     pinMode(PIN_Y, INPUT);
     gpio_y = gpio_adapter_new(PIN_Y);
-    btn_y = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_y);
+    btn_y = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_y);
     pinMode(PIN_B, INPUT);
     gpio_b = gpio_adapter_new(PIN_B);
-    btn_b = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_b);
+    btn_b = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_b);
     pinMode(PIN_A, INPUT);
     gpio_a = gpio_adapter_new(PIN_A);
-    btn_a = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_a);
+    btn_a = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_a);
     pinMode(PIN_X, INPUT);
     gpio_x = gpio_adapter_new(PIN_X);
-    btn_x = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_x);
+    btn_x = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_x);
     pinMode(PIN_L, INPUT);
     gpio_l = gpio_adapter_new(PIN_L);
-    btn_l = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_l);
+    btn_l = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_l);
     pinMode(PIN_R, INPUT);
     gpio_r = gpio_adapter_new(PIN_R);
-    btn_r = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_r);
+    btn_r = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_r);
     pinMode(PIN_SELECT, INPUT);
     gpio_select = gpio_adapter_new(PIN_SELECT);
-    btn_select = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_select);
+    btn_select = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_select);
     pinMode(PIN_START, INPUT);
     gpio_start = gpio_adapter_new(PIN_START);
-    btn_start = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_start);
+    btn_start = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_start);
     pinMode(PIN_HOME, INPUT);
     gpio_home = gpio_adapter_new(PIN_HOME);
-    btn_home = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_home);
+    btn_home = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_home);
     pinMode(PIN_POWER, INPUT);
     gpio_power = gpio_adapter_new(PIN_POWER);
-    btn_power = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_power);
+    btn_power = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_power);
     pinMode(PIN_WIRELESS, INPUT);
     gpio_wireless = gpio_adapter_new(PIN_WIRELESS);
-    btn_wireless = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_wireless);
+    btn_wireless = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_wireless);
 
     pinMode(PIN_UP, INPUT);
     gpio_up = gpio_adapter_new(PIN_UP);
-    hat_up = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_up);
+    hat_up = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_up);
     pinMode(PIN_RIGHT, INPUT);
     gpio_right = gpio_adapter_new(PIN_RIGHT);
-    hat_right = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_right);
+    hat_right = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_right);
     pinMode(PIN_DOWN, INPUT);
     gpio_down = gpio_adapter_new(PIN_DOWN);
-    hat_down = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_down);
+    hat_down = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_down);
     pinMode(PIN_LEFT, INPUT);
     gpio_left = gpio_adapter_new(PIN_LEFT);
-    hat_left = ncm_button_new((NcmGeneralPurposeIOInterface *)gpio_left);
-    hat = ncm_hat_new(hat_up, hat_right, hat_down, hat_left);
+    hat_left = qpi_button_new((QpiGeneralPurposeIOInterface *)gpio_left);
+    hat = qpi_hat_new(hat_up, hat_right, hat_down, hat_left);
 
     Wire1.setSDA(PIN_I2C_SDA);
     Wire1.setSCL(PIN_I2C_SCL);
@@ -371,7 +373,7 @@ void setup()
     dac = ds4432_new(&Wire1);
     dac_v = ds4432_adapter_new(dac, DS4432_OUT0);
     dac_h = ds4432_adapter_new(dac, DS4432_OUT1);
-    sp = ncm_slidepad_new((NcmCurrentDAConverterInterface *)dac_v, (NcmCurrentDAConverterInterface *)dac_h);
+    sp = qpi_slidepad_new((QpiCurrentDAConverterInterface *)dac_v, (QpiCurrentDAConverterInterface *)dac_h);
 
     SPI.setSCK(PIN_SPI_SCK);
     SPI.setTX(PIN_SPI_TX);
@@ -387,7 +389,7 @@ void setup()
     pinMode(PIN_SW_IN, OUTPUT);
     sw = adg801_new(PIN_SW_IN);
     sw_adapter = adg801_adapter_new(sw);
-    ts = ncm_touchscreen_new((NcmDigitalPotentiometerInterface *)pots_v, (NcmDigitalPotentiometerInterface *)pots_h, (NcmSPSTSwitchInterface *)sw_adapter);
+    ts = qpi_touchscreen_new((QpiDigitalPotentiometerInterface *)pots_v, (QpiDigitalPotentiometerInterface *)pots_h, (QpiSPSTSwitchInterface *)sw_adapter);
 
     assert(
         btn_y != NULL &&

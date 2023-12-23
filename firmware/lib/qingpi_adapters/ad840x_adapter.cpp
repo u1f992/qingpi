@@ -1,6 +1,6 @@
-#include "adapters.h"
+#include "qingpi_adapters.h"
 
-static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
+static void ad840x_adapter_set_wiper_position(QpiDigitalPotentiometerInterface *parent, uint16_t position)
 {
     AD840XAdapter *self = (AD840XAdapter *)parent;
     if (self == NULL)
@@ -8,10 +8,10 @@ static void ad840x_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *
         return;
     }
 
-    ad840x_set(self->pots, self->addr, (uint8_t)(255 * position));
+    ad840x_set(self->pots, self->addr, (uint8_t)(((double)position / UINT16_MAX) * UINT8_MAX));
 }
 
-static void ad840x_adapter_power_on(NcmDigitalPotentiometerInterface *parent)
+static void ad840x_adapter_power_on(QpiDigitalPotentiometerInterface *parent)
 {
     AD840XAdapter *self = (AD840XAdapter *)parent;
     if (self == NULL)
@@ -22,7 +22,7 @@ static void ad840x_adapter_power_on(NcmDigitalPotentiometerInterface *parent)
     ad840x_power_on(self->pots);
 }
 
-static void ad840x_adapter_shutdown(NcmDigitalPotentiometerInterface *parent)
+static void ad840x_adapter_shutdown(QpiDigitalPotentiometerInterface *parent)
 {
     AD840XAdapter *self = (AD840XAdapter *)parent;
     if (self == NULL)

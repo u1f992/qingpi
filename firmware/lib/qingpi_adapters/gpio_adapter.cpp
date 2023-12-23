@@ -1,6 +1,6 @@
-#include "adapters.h"
+#include "qingpi_adapters.h"
 
-static void gpio_adapter_set_low(NcmGeneralPurposeIOInterface *parent)
+static void gpio_adapter_set_low(QpiGeneralPurposeIOInterface *parent)
 {
     GPIOAdapter *self = (GPIOAdapter *)parent;
     if (self == NULL)
@@ -12,7 +12,7 @@ static void gpio_adapter_set_low(NcmGeneralPurposeIOInterface *parent)
     digitalWrite(self->pin, LOW);
 }
 
-static void gpio_adapter_set_hi_z(NcmGeneralPurposeIOInterface *parent)
+static void gpio_adapter_set_hi_z(QpiGeneralPurposeIOInterface *parent)
 {
     GPIOAdapter *self = (GPIOAdapter *)parent;
     if (self == NULL)

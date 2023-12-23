@@ -1,8 +1,8 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
-void ncm_button_hold(NcmButton *self)
+void qpi_button_hold(QpiButton *self)
 {
     if (self == NULL)
     {
@@ -12,7 +12,7 @@ void ncm_button_hold(NcmButton *self)
     self->gpio->set_low(self->gpio);
 }
 
-void ncm_button_release(NcmButton *self)
+void qpi_button_release(QpiButton *self)
 {
     if (self == NULL)
     {
@@ -22,14 +22,14 @@ void ncm_button_release(NcmButton *self)
     self->gpio->set_hi_z(self->gpio);
 }
 
-NcmButton *ncm_button_new(NcmGeneralPurposeIOInterface *gpio)
+QpiButton *qpi_button_new(QpiGeneralPurposeIOInterface *gpio)
 {
     if (gpio == NULL)
     {
         return NULL;
     }
 
-    NcmButton *self = (NcmButton *)malloc(sizeof(NcmButton));
+    QpiButton *self = (QpiButton *)malloc(sizeof(QpiButton));
     if (self == NULL)
     {
         return NULL;
@@ -37,12 +37,12 @@ NcmButton *ncm_button_new(NcmGeneralPurposeIOInterface *gpio)
 
     self->gpio = gpio;
 
-    ncm_button_release(self);
+    qpi_button_release(self);
 
     return self;
 }
 
-void ncm_button_delete(NcmButton *self)
+void qpi_button_delete(QpiButton *self)
 {
     if (self == NULL)
     {

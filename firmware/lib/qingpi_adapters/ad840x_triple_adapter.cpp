@@ -1,13 +1,15 @@
-#include "adapters.h"
+#include "qingpi_adapters.h"
+
+static const uint16_t AD840X_TRIPLE_MAX = 510;
 
 static inline void ad840x_triple_set(AD840X *pots, AD840XAddress addr1, AD840XAddress addr2, AD840XAddress addr3, uint16_t data)
 {
-    if (511 <= data)
+    if (AD840X_TRIPLE_MAX < data)
     {
         return;
     }
 
-    if (data < 256)
+    if (data <= UINT8_MAX)
     {
         ad840x_set(pots, addr1, 0);
         ad840x_set(pots, addr2, 0);
@@ -15,13 +17,13 @@ static inline void ad840x_triple_set(AD840X *pots, AD840XAddress addr1, AD840XAd
     }
     else
     {
-        ad840x_set(pots, addr1, data - 255);
-        ad840x_set(pots, addr2, data - 255);
-        ad840x_set(pots, addr3, 255);
+        ad840x_set(pots, addr1, data - UINT8_MAX);
+        ad840x_set(pots, addr2, data - UINT8_MAX);
+        ad840x_set(pots, addr3, UINT8_MAX);
     }
 }
 
-static void ad840x_triple_adapter_set_wiper_position(NcmDigitalPotentiometerInterface *parent, double position)
+static void ad840x_triple_adapter_set_wiper_position(QpiDigitalPotentiometerInterface *parent, uint16_t position)
 {
     AD840XTripleAdapter *self = (AD840XTripleAdapter *)parent;
     if (self == NULL)
@@ -29,10 +31,10 @@ static void ad840x_triple_adapter_set_wiper_position(NcmDigitalPotentiometerInte
         return;
     }
 
-    ad840x_triple_set(self->pots, self->addr1, self->addr2, self->addr3, (uint16_t)(510 * position));
+    ad840x_triple_set(self->pots, self->addr1, self->addr2, self->addr3, (uint16_t)(((double)position / UINT16_MAX) * 510));
 }
 
-static void ad840x_triple_adapter_power_on(NcmDigitalPotentiometerInterface *parent)
+static void ad840x_triple_adapter_power_on(QpiDigitalPotentiometerInterface *parent)
 {
     AD840XTripleAdapter *self = (AD840XTripleAdapter *)parent;
     if (self == NULL)
@@ -43,7 +45,7 @@ static void ad840x_triple_adapter_power_on(NcmDigitalPotentiometerInterface *par
     ad840x_power_on(self->pots);
 }
 
-static void ad840x_triple_adapter_shutdown(NcmDigitalPotentiometerInterface *parent)
+static void ad840x_triple_adapter_shutdown(QpiDigitalPotentiometerInterface *parent)
 {
     AD840XTripleAdapter *self = (AD840XTripleAdapter *)parent;
     if (self == NULL)

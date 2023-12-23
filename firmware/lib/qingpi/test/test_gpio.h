@@ -1,4 +1,4 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
@@ -11,17 +11,17 @@ typedef enum TestGPIOState
 
 typedef struct TestGPIO
 {
-    NcmGeneralPurposeIOInterface parent;
+    QpiGeneralPurposeIOInterface parent;
     TestGPIOState state;
 } TestGPIO;
 
-static void test_gpio_set_low(NcmGeneralPurposeIOInterface *parent)
+static void test_gpio_set_low(QpiGeneralPurposeIOInterface *parent)
 {
     TestGPIO *self = (TestGPIO *)parent;
     self->state = TEST_GPIO_LOW;
 }
 
-static void test_gpio_set_hi_z(NcmGeneralPurposeIOInterface *parent)
+static void test_gpio_set_hi_z(QpiGeneralPurposeIOInterface *parent)
 {
     TestGPIO *self = (TestGPIO *)parent;
     self->state = TEST_GPIO_HI_Z;

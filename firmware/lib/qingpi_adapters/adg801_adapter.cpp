@@ -1,6 +1,6 @@
-#include "adapters.h"
+#include "qingpi_adapters.h"
 
-static void adg801_adapter_on(NcmSPSTSwitchInterface *parent)
+static void adg801_adapter_on(QpiSPSTSwitchInterface *parent)
 {
     ADG801Adapter *self = (ADG801Adapter *)parent;
     if (self == NULL)
@@ -11,7 +11,7 @@ static void adg801_adapter_on(NcmSPSTSwitchInterface *parent)
     adg801_on(self->sw);
 }
 
-static void adg801_adapter_off(NcmSPSTSwitchInterface *parent)
+static void adg801_adapter_off(QpiSPSTSwitchInterface *parent)
 {
     ADG801Adapter *self = (ADG801Adapter *)parent;
     if (self == NULL)

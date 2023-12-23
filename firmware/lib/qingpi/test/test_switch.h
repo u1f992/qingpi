@@ -1,4 +1,4 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
@@ -10,17 +10,17 @@ typedef enum TestSwitchState
 
 typedef struct TestSwitch
 {
-    NcmSPSTSwitchInterface parent;
+    QpiSPSTSwitchInterface parent;
     TestSwitchState state;
 } TestSwitch;
 
-static void test_switch_on(NcmSPSTSwitchInterface *parent)
+static void test_switch_on(QpiSPSTSwitchInterface *parent)
 {
     TestSwitch *self = (TestSwitch *)parent;
     self->state = TEST_SWITCH_ON;
 }
 
-static void test_switch_off(NcmSPSTSwitchInterface *parent)
+static void test_switch_off(QpiSPSTSwitchInterface *parent)
 {
     TestSwitch *self = (TestSwitch *)parent;
     self->state = TEST_SWITCH_OFF;

@@ -1,4 +1,4 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
@@ -10,19 +10,19 @@ typedef enum TestDACState
 
 typedef struct TestDAC
 {
-    NcmCurrentDAConverterInterface parent;
+    QpiCurrentDAConverterInterface parent;
     TestDACState state;
-    double value;
+    uint16_t value;
 } TestDAC;
 
-static void test_dac_sink(NcmCurrentDAConverterInterface *parent, double value)
+static void test_dac_sink(QpiCurrentDAConverterInterface *parent, uint16_t value)
 {
     TestDAC *self = (TestDAC *)parent;
     self->state = TEST_DAC_SINK;
     self->value = value;
 }
 
-static void test_dac_source(NcmCurrentDAConverterInterface *parent, double value)
+static void test_dac_source(QpiCurrentDAConverterInterface *parent, uint16_t value)
 {
     TestDAC *self = (TestDAC *)parent;
     self->state = TEST_DAC_SOURCE;
@@ -41,7 +41,7 @@ TestDAC *test_dac_new(void)
     self->parent.source = test_dac_source;
 
     self->state = TEST_DAC_SOURCE;
-    self->value = 0.0;
+    self->value = 0;
 
     return self;
 }

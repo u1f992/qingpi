@@ -1,14 +1,10 @@
-#include "ncm.h"
+#include "qingpi.h"
 
 #include <stdlib.h>
 
-void ncm_touchscreen_hold(NcmTouchScreen *self, double x, double y)
+void qpi_touchscreen_hold(QpiTouchScreen *self, uint16_t x, uint16_t y)
 {
     if (self == NULL)
-    {
-        return;
-    }
-    if (x < 0.0 || 1.0 < x || y < 0.0 || 1.0 < y)
     {
         return;
     }
@@ -21,7 +17,7 @@ void ncm_touchscreen_hold(NcmTouchScreen *self, double x, double y)
     self->sw->on(self->sw);
 }
 
-void ncm_touchscreen_release(NcmTouchScreen *self)
+void qpi_touchscreen_release(QpiTouchScreen *self)
 {
     if (self == NULL)
     {
@@ -33,14 +29,14 @@ void ncm_touchscreen_release(NcmTouchScreen *self)
     self->horizontal->shutdown(self->horizontal);
 }
 
-NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, NcmDigitalPotentiometerInterface *horizontal, NcmSPSTSwitchInterface *sw)
+QpiTouchScreen *qpi_touchscreen_new(QpiDigitalPotentiometerInterface *vertical, QpiDigitalPotentiometerInterface *horizontal, QpiSPSTSwitchInterface *sw)
 {
     if (vertical == NULL || horizontal == NULL || sw == NULL)
     {
         return NULL;
     }
 
-    NcmTouchScreen *self = (NcmTouchScreen *)malloc(sizeof(NcmTouchScreen));
+    QpiTouchScreen *self = (QpiTouchScreen *)malloc(sizeof(QpiTouchScreen));
     if (self == NULL)
     {
         return NULL;
@@ -50,12 +46,12 @@ NcmTouchScreen *ncm_touchscreen_new(NcmDigitalPotentiometerInterface *vertical, 
     self->horizontal = horizontal;
     self->sw = sw;
 
-    ncm_touchscreen_release(self);
+    qpi_touchscreen_release(self);
 
     return self;
 }
 
-void ncm_touchscreen_delete(NcmTouchScreen *self)
+void qpi_touchscreen_delete(QpiTouchScreen *self)
 {
     if (self == NULL)
     {
