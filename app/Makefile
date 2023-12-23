@@ -12,16 +12,34 @@ endif
 
 all: dist/qingpi-app.exe
 
-icon.ico: ../logo/icon.svg
-	$(CONVERT) $< -transparent white -background none -resize 16x16 icon-16.bmp
-	$(CONVERT) $< -transparent white -background none -resize 32x32 icon-32.bmp
-	$(CONVERT) $< -transparent white -background none -resize 48x48 icon-48.bmp
-	$(CONVERT) $< -transparent white -background none -resize 64x64 icon-64.bmp
-	$(CONVERT) $< -transparent white -background none -resize 128x128 icon-128.bmp
-	$(CONVERT) icon-16.bmp icon-32.bmp icon-48.bmp icon-64.bmp icon-128.bmp $@
+temp_16.bmp: ../logo/icon.svg
+	$(CONVERT) $< -transparent white -background none -resize 16x16 temp_temp_16.bmp
+	$(CONVERT) temp_temp_16.bmp -gravity center -background none -extent 16x16 $@
+
+temp_32.bmp: ../logo/icon.svg
+	$(CONVERT) $< -transparent white -background none -resize 32x32 temp_temp_32.bmp
+	$(CONVERT) temp_temp_32.bmp -gravity center -background none -extent 32x32 $@
+
+temp_48.bmp: ../logo/icon.svg
+	$(CONVERT) $< -transparent white -background none -resize 48x48 temp_temp_48.bmp
+	$(CONVERT) temp_temp_48.bmp -gravity center -background none -extent 48x48 $@
+
+temp_64.bmp: ../logo/icon.svg
+	$(CONVERT) $< -transparent white -background none -resize 64x64 temp_temp_64.bmp
+	$(CONVERT) temp_temp_64.bmp -gravity center -background none -extent 64x64 $@
+
+temp_128.bmp: ../logo/icon.svg
+	$(CONVERT) $< -transparent white -background none -resize 128x128 temp_temp_128.bmp
+	$(CONVERT) temp_temp_128.bmp -gravity center -background none -extent 128x128 $@
+
+icon.ico: temp_16.bmp temp_32.bmp temp_48.bmp temp_64.bmp temp_128.bmp
+	$(CONVERT) $^ $@
 
 dist/qingpi-app.exe: app/__main__.py icon.ico
 	poetry run pyinstaller --onefile --windowed --name qingpi-app --icon icon.ico ./app/__main__.py
 
 clean:
-	$(RM) $(call FIXPATH,dist/* *.spec icon.ico icon-16.bmp icon-32.bmp icon-48.bmp icon-64.bmp icon-128.bmp)
+	$(RM) \
+	    $(call FIXPATH,dist/*) \
+	    $(call FIXPATH,*.spec) \
+	    $(call FIXPATH,temp_*)
