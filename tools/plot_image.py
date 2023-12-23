@@ -6,8 +6,8 @@ import time
 import cv2
 import serial
 
-import ncm
-from ncm import *
+import qingpi
+from qingpi import *
 
 
 def get_non_transparent_coordinates(img: cv2.Mat) -> list[tuple[int, int]]:
@@ -29,7 +29,7 @@ def main(args: argparse.Namespace) -> None:
     coords = get_non_transparent_coordinates(img)
 
     sp = serial.Serial(port=args.port, baudrate=9600)
-    hold, release = ncm.init(sp)
+    hold, release = qingpi.init(sp)
 
     def erase_screen():
         hold(TouchScreen(300, 220))

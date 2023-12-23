@@ -4,8 +4,8 @@ import time
 
 import serial
 
-import ncm
-from ncm import *
+import qingpi
+from qingpi import *
 
 
 def approximate_circle(center_x: float, center_y: float, radius: float):
@@ -31,7 +31,7 @@ def sort_points_clockwise(
 
 def main(args: argparse.Namespace):
     sp = serial.Serial(port=args.port, baudrate=9600)
-    hold, release = ncm.init(sp)
+    hold, release = qingpi.init(sp)
 
     time.sleep(2)
 
@@ -39,7 +39,7 @@ def main(args: argparse.Namespace):
         release()
         time.sleep(0.5)
         for x in range(127, -1, -1):
-            hold(LeftSlidePad(x, 128))
+            hold(SlidePad(x, 128))
             time.sleep(0.025)
         release()
         time.sleep(0.5)
@@ -47,7 +47,7 @@ def main(args: argparse.Namespace):
         release()
         time.sleep(0.5)
         for x in range(129, 256):
-            hold(LeftSlidePad(x, 128))
+            hold(SlidePad(x, 128))
             time.sleep(0.025)
         release()
         time.sleep(0.5)
@@ -55,7 +55,7 @@ def main(args: argparse.Namespace):
         release()
         time.sleep(0.5)
         for y in range(127, -1, -1):
-            hold(LeftSlidePad(128, y))
+            hold(SlidePad(128, y))
             time.sleep(0.025)
         release()
         time.sleep(0.5)
@@ -63,7 +63,7 @@ def main(args: argparse.Namespace):
         release()
         time.sleep(0.5)
         for y in range(129, 256):
-            hold(LeftSlidePad(128, y))
+            hold(SlidePad(128, y))
             time.sleep(0.025)
         release()
         time.sleep(0.5)
@@ -73,7 +73,7 @@ def main(args: argparse.Namespace):
             approximate_circle(127.5, 127.5, 127.5), 127.5, 127.5
         )
         for x, y in points:
-            hold(LeftSlidePad(x, y))
+            hold(SlidePad(x, y))
             time.sleep(0.01)
         release()
         time.sleep(0.5)

@@ -3,13 +3,13 @@ import time
 
 import serial
 
-import ncm
-from ncm import *
+import qingpi
+from qingpi import *
 
 
 def main(args: argparse.Namespace):
     sp = serial.Serial(port=args.port, baudrate=9600)
-    hold, release = ncm.init(sp)
+    hold, release = qingpi.init(sp)
 
     def erase_screen():
         hold(TouchScreen(300, 220))
