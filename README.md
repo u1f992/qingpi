@@ -4,6 +4,8 @@
 
 ![](logo/logo-white.svg#gh-dark-mode-only)
 
+![](pcb/pcb.jpg)
+
 Qingpi aka NeoCtrlMod is a project for externally controlling the Nintendo 3DS.
 
 - PCB, FPC, firmware, Python library and example application included.
@@ -16,7 +18,7 @@ Currently FPC is provided only for 3DS XL.
 
 ## Origin of the name
 
-Qing Pi (青皮) is a herbal remedy made from the peel of unripe citrus fruits. It is named after [Citra](), the famous 3DS emulator, and "Citra" is derived from "CTR", the model number of 3DS series.
+Qing Pi (青皮) is a herbal remedy made from the peel of unripe citrus fruits. It is named after [Citra](https://citra-emu.org/), the famous 3DS emulator, and "Citra" is derived from "CTR", the model number of 3DS series.
 
 ## Disclaimer
 
