@@ -76,5 +76,17 @@ poetry run python -m app [port] --debug
 The build script requires ImageMagick.
 
 ```
-make
+make all
+```
+
+To avoid security issues,
+
+```
+poetry run python -m pip uninstall pyinstaller
+cd ..\..\
+git clone https://github.com/pyinstaller/pyinstaller --depth 1
+cd .\pyinstaller\bootloader\
+py .\waf distclean all
+cd ..\..\qingpi\app\
+poetry run python -m pip install ..\..\pyinstaller\
 ```

@@ -84,10 +84,10 @@ cp2110 = ["hidapi"]
 
 [[package]]
 name = "qingpi-python"
-version = "0.1.0"
-description = ""
+version = "0.1.2"
+description = "Python library for Qingpi."
 optional = false
-python-versions = ">=3.10,<3.13"
+python-versions = "^3.10"
 files = []
 develop = false
 
@@ -97,5 +97,5 @@ url = "../qingpi-python"
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.10,<3.13"
-content-hash = "06091a337ec195e830914e87c2bcc372bfca3e56bb6db70fc15b626a47571e4e"
+python-versions = "^3.10"
+content-hash = "9b2debde33c191fa4d52ad4d8f6c23b7494a7ded67344580ba5172fb94f01ff5"

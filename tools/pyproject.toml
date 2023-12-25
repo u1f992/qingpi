@@ -6,7 +6,7 @@ authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = "^3.10"
 pyserial = "^3.5"
 opencv-python-headless = "^4.8.1.78"
 qingpi-python = {path = "../qingpi-python"}

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qingpi-python"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python library for Qingpi."
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 homepage = "https://github.com/U-1F992/qingpi"
@@ -11,7 +11,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = "^3.10"
 
 
 [build-system]
