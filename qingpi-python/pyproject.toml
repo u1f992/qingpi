@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "qingpi-python"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "Python library for Qingpi."
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
+homepage = "https://github.com/U-1F992/qingpi"
+repository = "https://github.com/U-1F992/qingpi"
 readme = "README.md"
 packages = [
     { include = "qingpi", from = "." }
