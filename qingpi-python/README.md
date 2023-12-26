@@ -11,7 +11,7 @@ Currently, only Windows version is available.
 ### Run
 
 ```shell-session
-$ python -m qingpi-python [port]
+$ python -m qingpi [port]
 ```
 
 or
