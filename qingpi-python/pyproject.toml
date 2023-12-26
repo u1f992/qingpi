@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qingpi-python"
-version = "0.1.6"
+version = "0.1.7"
 description = "Python library for Qingpi."
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 homepage = "https://github.com/U-1F992/qingpi"
