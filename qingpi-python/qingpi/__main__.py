@@ -6,11 +6,11 @@ import serial
 import qingpi
 from qingpi import *  # type: ignore
 
-from app.ui import *
-from app.button import *
-from app.hat import *
-from app.slidepad import *
-from app.touchscreen import *
+from .controller.ui import *
+from .controller.button import *
+from .controller.hat import *
+from .controller.slidepad import *
+from .controller.touchscreen import *
 
 
 def on_button_change(hold, release):

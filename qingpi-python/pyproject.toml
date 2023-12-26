@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qingpi-python"
-version = "0.1.2"
+version = "0.1.3"
 description = "Python library for Qingpi."
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 homepage = "https://github.com/U-1F992/qingpi"
@@ -11,8 +11,13 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+# python = "^3.10"  # not match because pyinstaller (6.3.0) requires Python <3.13,>=3.8
+python = ">=3.10,<3.13"
+pyserial = "^3.5"
 
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.3.0"
 
 [build-system]
 requires = ["poetry-core"]
