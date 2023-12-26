@@ -2,11 +2,17 @@
 
 Python library for Qingpi.
 
+```shell-session
+$ pip install qingpi-python
+```
+
 ## qingpi-controller
 
 GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.
 
 Currently, only Windows version is available.
+
+![](screenshot.jpg)
 
 ### Run
 
@@ -113,11 +119,14 @@ Hotkeys
 $ poetry run python -m qingpi [port] --debug
 ```
 
-The build script requires ImageMagick.
+The build script requires PyInstaller and ImageMagick.
 
 ```shell-session
+$ poetry run python -m pip install pyinstaller
 $ make
 ```
+
+PyInstaller is not included in the dev group because PyInstaller has a narrower Python version specification than necessary (e.g. v6.3.0 requires "<3.13,>=3.8"), which affects version reqirements of qingpi-python.
 
 To avoid security issues,
 
