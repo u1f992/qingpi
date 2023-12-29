@@ -1,19 +1,19 @@
 [tool.poetry]
 name = "qingpi-python"
-version = "0.1.7"
+version = "0.1.8"
 description = "Python library for Qingpi."
 authors = ["Koutaro Mukai <mukai.k1011k@outlook.jp>"]
 homepage = "https://github.com/U-1F992/qingpi"
 repository = "https://github.com/U-1F992/qingpi"
 readme = "README.md"
-packages = [
-    { include = "qingpi", from = "." }
-]
+packages = [{ include = "qingpi", from = "." }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 pyserial = "^3.5"
 
+[tool.poetry.scripts]
+qingpictrl = "qingpi.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]

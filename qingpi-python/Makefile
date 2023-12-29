@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean zip
 
 ifeq ($(OS),Windows_NT)
     RM = del /Q
@@ -10,7 +10,7 @@ else
     CONVERT = convert
 endif
 
-all: dist/qingpi-controller.exe
+all: dist/qingpictrl.exe zip
 
 icon:
 	mkdir icon
@@ -35,14 +35,27 @@ icon/128.bmp: ../logo/icon.svg icon
 	$(CONVERT) $< -transparent white -background none -resize 128x128 icon/temp_128.bmp
 	$(CONVERT) icon/temp_128.bmp -gravity center -background none -extent 128x128 $@
 
-icon/icon.ico: icon/16.bmp icon/32.bmp icon/48.bmp icon/64.bmp icon/128.bmp
+icon/256.bmp: ../logo/icon.svg icon
+	$(CONVERT) $< -transparent white -background none -resize 256x256 icon/temp_256.bmp
+	$(CONVERT) icon/temp_256.bmp -gravity center -background none -extent 256x256 $@
+
+icon/icon.ico: icon/16.bmp icon/32.bmp icon/48.bmp icon/64.bmp icon/128.bmp icon/256.bmp
 	$(CONVERT) $^ $@
 
-dist/qingpi-controller.exe: qingpi/__main__.py icon/icon.ico
-	poetry run pyinstaller --onefile --windowed --name qingpi-controller --icon icon/icon.ico ./qingpi/__main__.py
+qingpi/gui/icon.py: icon/256.bmp
+	$(CONVERT) $< icon/256.png
+	poetry run python -c "import base64; print('ICON = \"' + base64.b64encode(open('icon/256.png', 'rb').read()).decode() + '\"')" > $@
+
+dist/qingpictrl.exe: qingpi/__main__.py qingpi/gui/icon.py icon/icon.ico
+	poetry run pyinstaller --onefile --windowed --name qingpictrl --icon icon/icon.ico ./qingpi/__main__.py
+
+zip: dist/qingpictrl.exe
+	poetry run python tools/create_zip_archive.py
 
 clean:
 	$(RM) \
 	    $(call FIXPATH,dist/*) \
 	    $(call FIXPATH,icon/*) \
-	    $(call FIXPATH,*.spec)
+	    $(call FIXPATH,qingpi/gui/icon.py) \
+	    $(call FIXPATH,*.spec) \
+	    $(call FIXPATH,*.zip)

@@ -32,6 +32,9 @@ def make_window_transparent(master: tk.Tk):
     master.wm_attributes("-transparentcolor", "white")
 
 
+ALMOST_TRANSPARENT = 0.0019607843138
+
+
 def create_transparent_filler(master: tk.Tk):
     filler = tk.Toplevel(master)
 
@@ -40,7 +43,7 @@ def create_transparent_filler(master: tk.Tk):
     # Erase window frame
     filler.overrideredirect(True)
     # Make the filler transparent. As close to 0 as possible, as long as it is clickable.
-    filler.wm_attributes("-alpha", 0.0019607843138)
+    filler.wm_attributes("-alpha", ALMOST_TRANSPARENT)
 
     # To learn what's going on, uncomment below.
     # filler.overrideredirect(False)

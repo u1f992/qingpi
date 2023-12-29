@@ -1,4 +1,5 @@
 import argparse
+import base64
 import tkinter as tk
 
 import serial
@@ -6,11 +7,12 @@ import serial
 import qingpi
 from qingpi import *  # type: ignore
 
-from .controller.ui import *
-from .controller.button import *
-from .controller.hat import *
-from .controller.slidepad import *
-from .controller.touchscreen import *
+from qingpi.gui.gui import *
+from qingpi.gui.button import *
+from qingpi.gui.hat import *
+from qingpi.gui.slidepad import *
+from qingpi.gui.touchscreen import *
+from qingpi.gui.icon import ICON
 
 
 def on_button_change(hold, release):
@@ -106,7 +108,19 @@ def on_touchscreen_release(_, release):
     return _on_touchscreen_release
 
 
-def main(args: argparse.Namespace) -> None:
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="__main__.py",
+        description="GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.",
+    )
+    parser.add_argument(
+        "port",
+        type=str,
+        help="Serial port name.",
+    )
+    parser.add_argument("--debug", action="store_true")
+    args = parser.parse_args()
+
     ser = serial.Serial(args.port)
     if not args.debug:
         hold, release = qingpi.init(ser)
@@ -123,9 +137,7 @@ def main(args: argparse.Namespace) -> None:
         hold, release = qingpi.init(DebugWriter(ser))
 
     root = tk.Tk()
-    # kind of a bit buggy.
-    # root.iconbitmap("icon.ico")
-    root.title("Qingpi")
+    root.title(f"qingpictrl - {args.port}")
 
     touchscreen_size = TouchScreenSize(width=320, height=240)
 
@@ -148,20 +160,14 @@ def main(args: argparse.Namespace) -> None:
         on_touchscreen_hold(hold, release),
         on_touchscreen_release(hold, release),
     )
+    
+    # Kind of a bit buggy.
+    # It won't work properly unless write it here.
+    iconphoto = tk.PhotoImage(data=base64.b64decode(ICON))
+    root.iconphoto(False, iconphoto)
 
     root.mainloop()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="__main__.py",
-        description="GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.",
-    )
-    parser.add_argument(
-        "port",
-        type=str,
-        help="Serial port name.",
-    )
-    parser.add_argument("--debug", action="store_true")
-    args = parser.parse_args()
-    main(args)
+    main()
