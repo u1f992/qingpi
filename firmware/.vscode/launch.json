@@ -12,22 +12,22 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
+            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/release/firmware.elf",
+            "projectEnvName": "release",
             "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd",
             "preLaunchTask": {
                 "type": "PlatformIO",
-                "task": "Pre-Debug"
+                "task": "Pre-Debug (release)"
             }
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
+            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/release/firmware.elf",
+            "projectEnvName": "release",
             "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd"
@@ -36,8 +36,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
+            "executable": "C:/Users/mukai/qingpi/firmware/.pio/build/release/firmware.elf",
+            "projectEnvName": "release",
             "toolchainBinDir": "C:/Users/mukai/.platformio/packages/toolchain-rp2040-earlephilhower/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "C:/Users/mukai/.platformio/platforms/raspberrypi/misc/svd/rp2040.svd",
