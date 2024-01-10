@@ -137,7 +137,7 @@ def main() -> None:
         hold, release = qingpi.init(DebugWriter(ser))
 
     root = tk.Tk()
-    root.title(f"qingpictrl - {args.port}")
+    root.title(f"qingpictl - {args.port}")
 
     touchscreen_size = TouchScreenSize(width=320, height=240)
 
@@ -160,7 +160,7 @@ def main() -> None:
         on_touchscreen_hold(hold, release),
         on_touchscreen_release(hold, release),
     )
-    
+
     # Kind of a bit buggy.
     # It won't work properly unless write it here.
     iconphoto = tk.PhotoImage(data=base64.b64decode(ICON))

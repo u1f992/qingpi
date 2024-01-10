@@ -3,3 +3,4 @@ from .qingpi import Hat, UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UP
 from .qingpi import SlidePad
 from .qingpi import TouchScreen
 from .qingpi import init
+from .qingpi import HoldOp, HoldFunction, ReleaseOp, ReleaseFunction

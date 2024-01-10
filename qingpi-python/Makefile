@@ -10,7 +10,7 @@ else
     CONVERT = convert
 endif
 
-all: dist/qingpictrl.exe zip
+all: dist/qingpictl.exe zip
 
 icon:
 	mkdir icon
@@ -46,10 +46,10 @@ qingpi/gui/icon.py: icon/256.bmp
 	$(CONVERT) $< icon/256.png
 	poetry run python -c "import base64; print('ICON = \"' + base64.b64encode(open('icon/256.png', 'rb').read()).decode() + '\"')" > $@
 
-dist/qingpictrl.exe: qingpi/__main__.py qingpi/gui/icon.py icon/icon.ico
-	poetry run pyinstaller --onefile --windowed --name qingpictrl --icon icon/icon.ico ./qingpi/__main__.py
+dist/qingpictl.exe: qingpi/__main__.py qingpi/gui/icon.py icon/icon.ico
+	poetry run pyinstaller --onefile --windowed --name qingpictl --icon icon/icon.ico ./qingpi/__main__.py
 
-zip: dist/qingpictrl.exe
+zip: dist/qingpictl.exe
 	poetry run python tools/create_zip_archive.py
 
 clean:

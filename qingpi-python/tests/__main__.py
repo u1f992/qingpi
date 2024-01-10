@@ -154,6 +154,13 @@ def main():
     release()
     assert mock.state == INIT_STATE
 
+    # Type check
+    def _(hold: HoldFunction, release: ReleaseFunction):
+        hold(A, UP, SlidePad(100, 100), TouchScreen(100, 100))
+        release(Button, Hat, SlidePad, TouchScreen)
+
+    _(hold, release)
+
 
 if __name__ == "__main__":
     main()

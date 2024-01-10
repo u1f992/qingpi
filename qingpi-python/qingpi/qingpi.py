@@ -48,7 +48,7 @@ class Hat(enum.IntEnum):
 UP = Hat.UP
 UPRIGHT = Hat.UPRIGHT
 RIGHT = Hat.RIGHT
-DOWNRIGHT = Hat.DOWN
+DOWNRIGHT = Hat.DOWNRIGHT
 DOWN = Hat.DOWN
 DOWNLEFT = Hat.DOWNLEFT
 LEFT = Hat.LEFT
@@ -59,9 +59,10 @@ UPLEFT = Hat.UPLEFT
 class SlidePad:
     """
     The upper left corner of the coord is (0,0) and the lower right one is (255,255).
-    
+
     Values outside the range are automatically clamped.
     """
+
     x: int
     y: int
 
@@ -70,13 +71,17 @@ class SlidePad:
         object.__setattr__(self, "y", min(max(self.y, 0), 255))
 
 
+SLIDEPAD_NEUTRAL = 128
+
+
 @dataclasses.dataclass(frozen=True)
 class TouchScreen:
     """
     The upper left corner of the coord is (1,1) and the lower right one is (320,240).
-    
+
     Values outside the range are automatically clamped.
     """
+
     x: int
     y: int
 
@@ -90,14 +95,25 @@ class _Writer(typing.Protocol):
         raise NotImplementedError()
 
 
-_HoldOp = Button | Hat | SlidePad | TouchScreen
-_ReleaseOp = Button | type[Button] | type[Hat] | type[SlidePad] | type[TouchScreen]
+HoldOp = Button | Hat | SlidePad | TouchScreen
 
 
-def init(writer: _Writer):
+class HoldFunction(typing.Protocol):
+    def __call__(self, *ops: HoldOp) -> None:  # type: ignore
+        pass
+
+
+ReleaseOp = Button | type[Button] | type[Hat] | type[SlidePad] | type[TouchScreen]
+
+
+class ReleaseFunction(typing.Protocol):
+    def __call__(self, *ops: ReleaseOp) -> None:  # type: ignore
+        pass
+
+
+def init(writer: _Writer) -> tuple[HoldFunction, ReleaseFunction]:
     HEADER = 0xAB
     HAT_NEUTRAL = int(Hat._NEUTRAL)
-    SLIDEPAD_NEUTRAL = 128
 
     state = [
         HEADER,
@@ -113,7 +129,7 @@ def init(writer: _Writer):
         0,
     ]
 
-    def hold(*ops: _HoldOp):
+    def hold(*ops: HoldOp):
         for op in ops:
             if isinstance(op, Button):
                 btn = state[2] << 8 | state[1]
@@ -135,7 +151,7 @@ def init(writer: _Writer):
 
         writer.write(state)
 
-    def release(*ops: _ReleaseOp):
+    def release(*ops: ReleaseOp):
         if len(ops) == 0:
             release(Button, Hat, SlidePad, TouchScreen)
             return

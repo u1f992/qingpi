@@ -6,7 +6,7 @@ Python library for Qingpi.
 $ pip install qingpi-python
 ```
 
-## qingpictrl
+## qingpictl
 
 GUI application to control Qingpi with transparent Window and Citra compatible keyboard operation.
 
@@ -17,7 +17,7 @@ Currently, only Windows version is available.
 ### Run
 
 ```shell-session
-$ qingpictrl [port]
+$ qingpictl [port]
 ```
 
 or
@@ -29,13 +29,13 @@ $ python -m qingpi [port]
 or using pre-built binary
 
 ```shell-session
-> qingpictrl.exe [port]
+> qingpictl.exe [port]
 ```
 
 You may create batch file like this if you don't want to specify the port from the command line every time.
 
 ```bat
-START qingpictrl.exe COM6
+START qingpictl.exe COM6
 ```
 
 ### Input mapping
