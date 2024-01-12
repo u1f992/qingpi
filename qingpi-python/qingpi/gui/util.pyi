@@ -1,0 +1,3 @@
+import typing
+
+def convert_bool_array_to_int(bool_array: typing.Sequence[bool]) -> int: ...

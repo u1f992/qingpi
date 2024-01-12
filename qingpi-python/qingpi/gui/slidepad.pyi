@@ -1,0 +1,6 @@
+from .util import *
+import tkinter as tk
+import typing
+
+def bind_slidepad_controller(master: tk.Tk, on_slidepad_change: typing.Callable[[int, int], None]) -> None: ...
+def bind_ext_slidepad_controller(master: tk.Tk, on_ext_slidepad_change: typing.Callable[[int, int], None]) -> None: ...

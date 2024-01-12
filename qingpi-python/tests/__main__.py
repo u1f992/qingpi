@@ -39,7 +39,7 @@ class MockWriter:
     def __init__(self) -> None:
         self.state = INIT_STATE
 
-    def write(self, data):
+    def write(self, data: typing.Sequence[typing.Any]):
         assert isinstance(data, typing.Iterable)
         s = list(data)
         assert len(s) == 11

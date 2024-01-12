@@ -30,7 +30,7 @@ def bind_touchscreen_controller(
     size: TouchScreenSize,
     on_hold: typing.Callable[[int, int], None],
     on_release: typing.Callable[[], None],
-):
+) -> None:
     prev: tuple[int, int] | None = None
 
     def _on_hold(event: "tk.Event[tk.Misc]"):

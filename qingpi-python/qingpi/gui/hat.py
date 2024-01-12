@@ -19,7 +19,7 @@ class HatState(enum.Enum):
 
 def bind_hat_controller(
     master: tk.Tk, on_hat_change: typing.Callable[[HatState], None]
-):
+) -> None:
     keys_state = [False, False, False, False]  # up, right, down, left
     keys_to_hat: dict[int, HatState] = {
         0b0000: HatState.NEUTRAL,
@@ -60,6 +60,8 @@ def bind_hat_controller(
                 keys_state[2] = True
             case "f":
                 keys_state[3] = True
+            case _:
+                pass
         _on_hat_change()
 
     def _on_keyrelease(event: "tk.Event[tk.Misc]"):
@@ -72,6 +74,8 @@ def bind_hat_controller(
                 keys_state[2] = False
             case "f":
                 keys_state[3] = False
+            case _:
+                pass
         _on_hat_change()
 
     master.bind("<KeyPress>", _on_keypress, add=True)

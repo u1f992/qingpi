@@ -6,7 +6,7 @@ from .util import *
 
 def bind_slidepad_controller(
     master: tk.Tk, on_slidepad_change: typing.Callable[[int, int], None]
-):
+) -> None:
     arrow_keys_state = [False, False, False, False]
     arrow_keys_to_slidepad: dict[int, tuple[int, int]] = {
         0b0000: (128, 128),
@@ -81,7 +81,7 @@ def bind_slidepad_controller(
 
 def bind_ext_slidepad_controller(
     master: tk.Tk, on_ext_slidepad_change: typing.Callable[[int, int], None]
-):
+) -> None:
     keys_state = [False, False, False, False]
     keys_to_slidepad: dict[int, tuple[int, int]] = {
         0b0000: (128, 128),
@@ -122,6 +122,8 @@ def bind_ext_slidepad_controller(
                 keys_state[2] = True
             case "j":
                 keys_state[3] = True
+            case _:
+                pass
         _on_slidepad_change()
 
     def _on_keyrelease(event: "tk.Event[tk.Misc]"):
@@ -134,6 +136,8 @@ def bind_ext_slidepad_controller(
                 keys_state[2] = False
             case "j":
                 keys_state[3] = False
+            case _:
+                pass
         _on_slidepad_change()
 
     master.bind("<KeyPress>", _on_keypress, add=True)

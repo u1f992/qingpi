@@ -15,7 +15,7 @@ from qingpi.gui.touchscreen import *
 from qingpi.gui.icon import ICON
 
 
-def on_button_change(hold, release):
+def on_button_change(hold: HoldFunction, release: ReleaseFunction):
     def _on_button_change(id: ButtonID, pressed: bool):
         match id:
             case ButtonID.A:
@@ -55,7 +55,7 @@ def on_button_change(hold, release):
     return _on_button_change
 
 
-def on_hat_change(hold, release):
+def on_hat_change(hold: HoldFunction, release: ReleaseFunction):
     def _on_hat_change(hat: HatState):
         match hat:
             case HatState.UP:
@@ -80,28 +80,28 @@ def on_hat_change(hold, release):
     return _on_hat_change
 
 
-def on_slidepad_change(hold, _):
+def on_slidepad_change(hold: HoldFunction, _):
     def _on_slidepad_change(x: int, y: int):
         hold(SlidePad(x, y))
 
     return _on_slidepad_change
 
 
-def on_ext_slidepad_change(_0, _1):
+def on_ext_slidepad_change(_0, _1):  # type: ignore
     def _on_ext_slidepad_change(x: int, y: int):
         print(f"[NotImplemented] hold(ExtSlidePad({x}, {y}))")
 
     return _on_ext_slidepad_change
 
 
-def on_touchscreen_hold(hold, _):
+def on_touchscreen_hold(hold: HoldFunction, _):
     def _on_touchscreen_hold(x: int, y: int):
         hold(TouchScreen(x, y))
 
     return _on_touchscreen_hold
 
 
-def on_touchscreen_release(_, release):
+def on_touchscreen_release(_, release: ReleaseFunction):
     def _on_touchscreen_release():
         release(TouchScreen)
 
@@ -127,10 +127,10 @@ def main() -> None:
     else:
 
         class DebugWriter:
-            def __init__(self, ser):
+            def __init__(self, ser: serial.Serial):
                 self.__ser = ser
 
-            def write(self, data):
+            def write(self, data: typing.Any):
                 print(list(data))
                 return self.__ser.write(data)
 
@@ -141,7 +141,7 @@ def main() -> None:
 
     touchscreen_size = TouchScreenSize(width=320, height=240)
 
-    root.attributes("-topmost", True)
+    root.attributes("-topmost", True)  # type: ignore
     make_window_be_resized_only_by_keypress(
         root, (touchscreen_size.width, touchscreen_size.height)
     )

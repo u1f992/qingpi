@@ -1,7 +1,10 @@
 import tkinter as tk
+import typing
 
 
-def make_window_be_resized_only_by_keypress(master: tk.Tk, min_size: tuple[int, int]):
+def make_window_be_resized_only_by_keypress(
+    master: tk.Tk, min_size: tuple[int, int]
+) -> None:
     min_width, min_height = min_size
 
     master.geometry(f"{min_width}x{min_height}")
@@ -27,15 +30,15 @@ def make_window_be_resized_only_by_keypress(master: tk.Tk, min_size: tuple[int, 
     master.bind("<KeyPress>", _on_keypress_resize, add=True)
 
 
-def make_window_transparent(master: tk.Tk):
+def make_window_transparent(master: tk.Tk) -> None:
     tk.Frame(master, background="white").pack(expand=True, fill=tk.BOTH)
-    master.wm_attributes("-transparentcolor", "white")
+    master.wm_attributes("-transparentcolor", "white")  # type: ignore
 
 
-ALMOST_TRANSPARENT = 0.0019607843138
+ALMOST_TRANSPARENT: typing.Final = 0.0019607843138
 
 
-def create_transparent_filler(master: tk.Tk):
+def create_transparent_filler(master: tk.Tk) -> tk.Toplevel:
     filler = tk.Toplevel(master)
 
     # Erase from the taskbar
@@ -43,7 +46,7 @@ def create_transparent_filler(master: tk.Tk):
     # Erase window frame
     filler.overrideredirect(True)
     # Make the filler transparent. As close to 0 as possible, as long as it is clickable.
-    filler.wm_attributes("-alpha", ALMOST_TRANSPARENT)
+    filler.wm_attributes("-alpha", ALMOST_TRANSPARENT)  # type: ignore
 
     # To learn what's going on, uncomment below.
     # filler.overrideredirect(False)

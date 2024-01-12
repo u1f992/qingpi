@@ -21,7 +21,7 @@ class ButtonID(enum.Enum):
 
 def bind_button_controller(
     master: tk.Tk, on_button_change: typing.Callable[[ButtonID, bool], None]
-):
+) -> None:
     prev = {
         ButtonID.A: False,
         ButtonID.B: False,

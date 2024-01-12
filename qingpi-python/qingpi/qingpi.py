@@ -20,17 +20,17 @@ class Button(enum.IntEnum):
     _CAPTURE = 13
 
 
-Y = Button.Y
-B = Button.B
-A = Button.A
-X = Button.X
-L = Button.L
-R = Button.R
-SELECT = Button.SELECT
-START = Button.START
-POWER = Button.POWER
-WIRELESS = Button.WIRELESS
-HOME = Button.HOME
+Y: typing.Literal[Button.Y] = Button.Y
+B: typing.Literal[Button.B] = Button.B
+A: typing.Literal[Button.A] = Button.A
+X: typing.Literal[Button.X] = Button.X
+L: typing.Literal[Button.L] = Button.L
+R: typing.Literal[Button.R] = Button.R
+SELECT: typing.Literal[Button.SELECT] = Button.SELECT
+START: typing.Literal[Button.START] = Button.START
+POWER: typing.Literal[Button.POWER] = Button.POWER
+WIRELESS: typing.Literal[Button.WIRELESS] = Button.WIRELESS
+HOME: typing.Literal[Button.HOME] = Button.HOME
 
 
 class Hat(enum.IntEnum):
@@ -42,17 +42,17 @@ class Hat(enum.IntEnum):
     DOWNLEFT = 5
     LEFT = 6
     UPLEFT = 7
-    _NEUTRAL = 8
+    NEUTRAL = 8
 
 
-UP = Hat.UP
-UPRIGHT = Hat.UPRIGHT
-RIGHT = Hat.RIGHT
-DOWNRIGHT = Hat.DOWNRIGHT
-DOWN = Hat.DOWN
-DOWNLEFT = Hat.DOWNLEFT
-LEFT = Hat.LEFT
-UPLEFT = Hat.UPLEFT
+UP: typing.Literal[Hat.UP] = Hat.UP
+UPRIGHT: typing.Literal[Hat.UPRIGHT] = Hat.UPRIGHT
+RIGHT: typing.Literal[Hat.RIGHT] = Hat.RIGHT
+DOWNRIGHT: typing.Literal[Hat.DOWNRIGHT] = Hat.DOWNRIGHT
+DOWN: typing.Literal[Hat.DOWN] = Hat.DOWN
+DOWNLEFT: typing.Literal[Hat.DOWNLEFT] = Hat.DOWNLEFT
+LEFT: typing.Literal[Hat.LEFT] = Hat.LEFT
+UPLEFT: typing.Literal[Hat.UPLEFT] = Hat.UPLEFT
 
 
 @dataclasses.dataclass(frozen=True)
@@ -91,7 +91,7 @@ class TouchScreen:
 
 
 class _Writer(typing.Protocol):
-    def write(self, __b):
+    def write(self, __b: typing.Any) -> typing.Any:
         raise NotImplementedError()
 
 
@@ -113,7 +113,7 @@ class ReleaseFunction(typing.Protocol):
 
 def init(writer: _Writer) -> tuple[HoldFunction, ReleaseFunction]:
     HEADER = 0xAB
-    HAT_NEUTRAL = int(Hat._NEUTRAL)
+    HAT_NEUTRAL = int(Hat.NEUTRAL)
 
     state = [
         HEADER,
@@ -144,7 +144,7 @@ def init(writer: _Writer) -> tuple[HoldFunction, ReleaseFunction]:
                 state[4] = op.x
                 state[5] = op.y
 
-            elif isinstance(op, TouchScreen):
+            else:  # if isinstance(op, TouchScreen):
                 state[8] = op.x & 0xFF
                 state[9] = op.x >> 8
                 state[10] = op.y

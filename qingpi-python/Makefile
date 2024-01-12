@@ -1,4 +1,4 @@
-.PHONY: all clean zip
+.PHONY: all clean zip stub
 
 ifeq ($(OS),Windows_NT)
     RM = del /Q
@@ -52,10 +52,18 @@ dist/qingpictl.exe: qingpi/__main__.py qingpi/gui/icon.py icon/icon.ico
 zip: dist/qingpictl.exe
 	poetry run python tools/create_zip_archive.py
 
+stub:
+	poetry run stubgen -p qingpi -o out
+	poetry run python tools/replace.py "out/qingpi/gui/touchscreen.pyi" "def __init__\(self, width, height\)" "def __init__(self, width: int, height: int)"
+	poetry run python tools/replace.py "out/qingpi/qingpi.pyi" "def __init__\(self, x, y\)" "def __init__(self, x: int, y: int)"
+	poetry run python -c "import shutil, glob, os; [shutil.copy(file, file.replace('out/qingpi', 'qingpi', 1)) or os.makedirs(os.path.dirname(file.replace('out/qingpi', 'qingpi', 1)), exist_ok=True) for file in glob.glob('out/qingpi/**/*.pyi', recursive=True)]"
+
 clean:
 	$(RM) \
 	    $(call FIXPATH,dist/*) \
 	    $(call FIXPATH,icon/*) \
 	    $(call FIXPATH,qingpi/gui/icon.py) \
 	    $(call FIXPATH,*.spec) \
-	    $(call FIXPATH,*.zip)
+	    $(call FIXPATH,*.zip) \
+	    $(call FIXPATH,out/qingpi/*) \
+	    $(call FIXPATH,out/qingpi/gui/*)
