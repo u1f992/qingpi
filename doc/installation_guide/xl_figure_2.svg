@@ -4,10 +4,10 @@
 <svg
    version="1.1"
    id="svg132"
-   width="1326.2173"
-   height="1271.6055"
-   viewBox="0 0 1326.2173 1271.6055"
-   sodipodi:docname="figure_1.svg"
+   width="1326.2675"
+   height="1271.8518"
+   viewBox="0 0 1326.2675 1271.8518"
+   sodipodi:docname="xl_figure_2.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -32,9 +32,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.38887869"
-     inkscape:cx="322.72275"
-     inkscape:cy="874.30863"
+     inkscape:zoom="0.80959059"
+     inkscape:cx="662.06303"
+     inkscape:cy="633.65361"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
@@ -45,7 +45,14 @@
      inkscape:groupmode="layer"
      inkscape:label="Image"
      id="g138"
-     transform="translate(-2727.0097,-1531.8563)">
+     transform="translate(-2727.0098,-1531.8563)">
+    <rect
+       style="fill:#ffffff;stroke-width:9.60903;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect320"
+       width="1326.2675"
+       height="1271.8518"
+       x="2727.0098"
+       y="1531.8563" />
     <rect
        style="display:inline;fill:#0eaf00;fill-opacity:1;stroke:none;stroke-width:17.021;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect4739"
@@ -177,8 +184,8 @@
        id="text8696-3"><tspan
          sodipodi:role="line"
          id="tspan8694-7"
-         x="3297.3555"
-         y="2753.3276">3.5mmコネクタ</tspan></text>
+         x="0"
+         y="0">3.5mmコネクタ</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:53.3333px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';display:none;fill:#3d3d3d;fill-opacity:1;stroke:none;stroke-width:18.8976;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers"
@@ -186,8 +193,8 @@
        y="1629.8334"
        id="text8696-0-6"><tspan
          sodipodi:role="line"
-         x="3866.2527"
-         y="1629.8334"
+         x="0"
+         y="0"
          id="tspan11461-8">筐体</tspan></text>
     <text
        xml:space="preserve"
@@ -197,8 +204,8 @@
        id="text8696-7-5"><tspan
          sodipodi:role="line"
          id="tspan8694-9-4"
-         x="2779.0859"
-         y="2753.3276">詰め物</tspan></text>
+         x="0"
+         y="0">詰め物</tspan></text>
     <path
        style="fill:none;fill-opacity:1;stroke:#3d3d3d;stroke-width:10.829;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 2860.0356,2604.7832 v 83.5386"

@@ -4,10 +4,10 @@
 <svg
    version="1.1"
    id="svg132"
-   width="1332.6855"
-   height="648.91412"
-   viewBox="0 0 1332.6856 648.91414"
-   sodipodi:docname="figure_2.svg"
+   width="1331.5985"
+   height="647.16058"
+   viewBox="0 0 1331.5986 647.1606"
+   sodipodi:docname="xl_figure_1.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -32,9 +32,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.48139571"
-     inkscape:cx="350.02389"
-     inkscape:cy="149.56511"
+     inkscape:zoom="0.85677259"
+     inkscape:cx="670.53966"
+     inkscape:cy="407.34263"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
@@ -46,6 +46,13 @@
      inkscape:label="Image"
      id="g138"
      transform="translate(-2720.7974,-1781.452)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:9.10784;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect266"
+       width="1331.5985"
+       height="647.16058"
+       x="2720.7974"
+       y="1781.452" />
     <rect
        style="display:inline;fill:#0eaf00;fill-opacity:1;stroke:none;stroke-width:3.46395;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect4739"
@@ -199,8 +206,8 @@
        y="1898.3745"
        id="text17581"><tspan
          sodipodi:role="line"
-         x="3603.0737"
-         y="1898.3745"
+         x="0"
+         y="0"
          id="tspan17579">筐体</tspan></text>
     <text
        xml:space="preserve"
@@ -210,8 +217,8 @@
        id="text17585"><tspan
          sodipodi:role="line"
          id="tspan17583"
-         x="2781.9851"
-         y="2356.5391">詰め物</tspan></text>
+         x="0"
+         y="0">詰め物</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:53.3333px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';display:none;fill:#3d3d3d;fill-opacity:1;stroke:none;stroke-width:18.8976;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers"
@@ -220,7 +227,7 @@
        id="text17589"><tspan
          sodipodi:role="line"
          id="tspan17587"
-         x="3251.3669"
-         y="2356.5391">3DS基板</tspan></text>
+         x="0"
+         y="0">3DS基板</tspan></text>
   </g>
 </svg>
