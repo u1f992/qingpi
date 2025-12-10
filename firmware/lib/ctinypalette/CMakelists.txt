@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(ctinypalette)
+set(CMAKE_C_STANDARD 99)
+
+include_directories(include)
+add_library(ctinypalette STATIC
+            src/rgb_16.c
+            src/hsv_16.c)
+
+add_executable(test test/test.c)
+target_link_libraries(test ctinypalette)
